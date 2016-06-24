@@ -1,7 +1,7 @@
-// TODO writing .8 at the beginning doesn't make it into 0.8 properly.
-
 // TODO, when pressing enter after having pressed a number, it adds the number to the textfield,
 // like the number was clicked again. The expected result is calc();
+
+// TODO, check if they have an unclosed parenhesis and if they do display an alert box :D
 
 // Memory should be an array of arrays
 
@@ -12,6 +12,8 @@ window.onload = function () {
   var number1 = '';
   var number2 = '';
   var op = '';
+  var degreeType = "Deg";
+  var EE = false;
 
   // Using KeyUp here instead of keypress, so it will catch backspace
   document.body.addEventListener('keyup', function(e) {
@@ -22,7 +24,7 @@ window.onload = function () {
       calc();
     // If the BACKSPACE key is pressed
     } else if (key === 8) {
-      e.preventDefault();
+      e.preventDefault(); // Doesn't work
     //   input.value = input.value.substr(0, input.value.length - 1);
     //   calc();
     }
@@ -56,7 +58,6 @@ window.onload = function () {
     expressionCounter = expression.length -1;
     while(expressionCounter >= -1) {
       if (isNaN(expression[expressionCounter])) {
-        console.log(expression[expressionCounter]);
         var newOp = '';
         if (expression[expressionCounter] === '+') {
           newOp = '-';
@@ -80,7 +81,6 @@ window.onload = function () {
   });
   var percentage = document.querySelector('#percentage');
   percentage.addEventListener('click', function(){
-    console.log("=== PERCENT ===");
     expression = input.value.split("");
     expressionCounter = expression.length -1;
     var fullNumber = '';
@@ -90,7 +90,6 @@ window.onload = function () {
       expression.splice(expressionCounter, 1); //Remove the Number
       expressionCounter--;
     }
-    console.log("fullNumber: " + fullNumber);
     var percentCalculated = Number(fullNumber)/100;
     if (expression[expressionCounter] === undefined) {
       expression.unshift(percentCalculated);
@@ -117,10 +116,145 @@ window.onload = function () {
   for (var index = 0; index < numbers.length; index += 1) {
     numbers[index].addEventListener("click", addValue.bind(null, index));
   }
+  var decimal = document.querySelector('.decimal');
+  decimal.addEventListener('click', function(){input.value  += '.';});
+
   function addValue(index) {
     input.value += numbers[index].innerText;
     calc();
   }
+
+//   SSSSSSSSSSSSSSS         CCCCCCCCCCCCC  IIIIIIIIII  EEEEEEEEEEEEEEEEEEEEEE
+// SS:::::::::::::::S     CCC::::::::::::C  I::::::::I  E::::::::::::::::::::E
+// S:::::SSSSSS::::::S   CC:::::::::::::::C I::::::::I  E::::::::::::::::::::E
+// S:::::S     SSSSSSS  C:::::CCCCCCCC::::C II::::::II  EE::::::EEEEEEEEE::::E
+// S:::::S             C:::::C       CCCCCC   I::::I      E:::::E       EEEEEE
+// S:::::S            C:::::C                 I::::I      E:::::E
+// S::::SSSS         C:::::C                  I::::I      E::::::EEEEEEEEEE
+//  SS::::::SSSSS    C:::::C                  I::::I      E:::::::::::::::E
+//    SSS::::::::SS  C:::::C                  I::::I      E:::::::::::::::E
+//       SSSSSS::::S C:::::C                  I::::I      E::::::EEEEEEEEEE
+//            S:::::SC:::::C                  I::::I      E:::::E
+//            S:::::S C:::::C       CCCCCC    I::::I      E:::::E       EEEEEE
+// SSSSSSS     S:::::S  C:::::CCCCCCCC::::C II::::::II  EE::::::EEEEEEEE:::::E
+// S::::::SSSSSS:::::S   CC:::::::::::::::C I::::::::I  E::::::::::::::::::::E
+// S:::::::::::::::SS      CCC::::::::::::C I::::::::I  E::::::::::::::::::::E
+// SSSSSSSSSSSSSSS           CCCCCCCCCCCCC  IIIIIIIIII  EEEEEEEEEEEEEEEEEEEEEE
+
+  // Scientific Functions
+  // <button id="parenthesis-1" type="button" name="button">(</button>
+  var par1 = document.querySelector('#parenthesis-1');
+  par1.addEventListener('click', function(){input.value  += '(';});
+  par1.style.background = "yellow";
+  // <button id="parenthesis-2" type="button" name="button">)</button>
+  var par2 = document.querySelector('#parenthesis-2');
+  par2.addEventListener('click', function(){input.value  += ')'; calc();});
+  par2.style.background = "yellow";
+  // <button id="mc" type="button" name="button">mc</button>
+  // <button id="mPlus" type="button" name="button">m+</button>
+  // <button id="mMinus-2" type="button" name="button">m-</button>
+  // <button id="mr" type="button" name="button">mr</button>
+  //
+  // <button id="second" type="button" name="button">2nd</button>
+  // <button id="X2" type="button" name="button">X2</button>
+  var squared = document.querySelector('#squared');
+  squared.addEventListener('click', function(){input.value  += '^2';});
+  squared.style.background = "yellow";
+  // <button id="X3" type="button" name="button">X3</button>
+  var squared3 = document.querySelector('#squared-3');
+  squared3.addEventListener('click', function(){input.value  += '^3';});
+  squared3.style.background = "yellow";
+  // <button id="Xy" type="button" name="button">Xy</button>
+  var squaredy = document.querySelector('#squared-y');
+  squaredy.addEventListener('click', function(){input.value  += '^';});
+  squaredy.style.background = "yellow";
+  // <button id="eX" type="button" name="button">eX</button>
+  var eSquared = document.querySelector('#e-squared');
+  eSquared.addEventListener('click', function(){input.value  += 'e^';});
+  eSquared.style.background = "yellow";
+  // <button id="tenX" type="button" name="button">10X</button>
+  var tenSquared = document.querySelector('#ten-squared');
+  tenSquared.addEventListener('click', function(){input.value  += '10^';});
+  tenSquared.style.background = "yellow";
+
+  // <button id="oneDividendX" type="button" name="button">1/X</button>
+  var oneDivided = document.querySelector('#one-divided-x');
+  oneDivided.addEventListener('click', function(){input.value  += '1/';});
+  oneDivided.style.background = "yellow";
+  // <button id="twoSquareRootX" type="button" name="button">2SQX</button>
+  var twoSquareRoot = document.querySelector('#two-squareroot-x');
+  twoSquareRoot.addEventListener('click', function(){input.value  += '2sqr(';});
+  twoSquareRoot.style.background = "yellow";
+  // <button id="threeSquareRootX" type="button" name="button">3SQX</button>
+  var threeSquareRoot = document.querySelector('#three-squareroot-x');
+  threeSquareRoot.addEventListener('click', function(){input.value  += '3sqr(';});
+  threeSquareRoot.style.background = "yellow";
+  // <button id="ySquareRootX" type="button" name="button">2SQX</button>
+  var ySquareRoot = document.querySelector('#y-squareRoot-x');
+  ySquareRoot.addEventListener('click', function(){input.value  += 'sqr(';});
+  ySquareRoot.style.background = "yellow";
+  // <button id="ln" type="button" name="button">ln</button>
+  var ln = document.querySelector('#ln');
+  ln.addEventListener('click', function(){input.value  += 'ln(';});
+  ln.style.background = "yellow";
+  // <button id="logTen" type="button" name="button">log10</button>
+  var log = document.querySelector('#log-ten');
+  log.addEventListener('click', function(){input.value  += 'log(';});
+  log.style.background = "yellow";
+  //
+  // <button id="XEsclamation" type="button" name="button">X!</button>
+  var factor = document.querySelector('#factor');
+  factor.addEventListener('click', function(){input.value  += '!';});
+  factor.style.background = "yellow";
+  // <button id="sin" type="button" name="button">sin</button>
+  var sin = document.querySelector('#sin');
+  sin.addEventListener('click', function(){input.value  += 'sin(';});
+  sin.style.background = "yellow";
+  // <button id="cos" type="button" name="button">cos</button>
+  var cos = document.querySelector('#cos');
+  cos.addEventListener('click', function(){input.value  += 'cos(';});
+  cos.style.background = "yellow";
+  // <button id="tan" type="button" name="button">tan</button>
+  var tan = document.querySelector('#tan');
+  tan.addEventListener('click', function(){input.value  += 'tan(';});
+  tan.style.background = "yellow";
+  // <button id="e" type="button" name="button">e</button>
+  var e = document.querySelector('#e');
+  e.addEventListener('click', function(){input.value  += 'e'; calc();});
+  e.style.background = "lightgreen";
+  // <button id="EE" type="button" name="button">EE</button>
+  var EEbutton = document.querySelector('#EE');
+  EEbutton.addEventListener('click', function(){
+    EEbutton = true;
+  });
+  EEbutton.style.background = "yellow";
+  // <button id="rad" type="button" name="button">Rad</button>
+  var rad = document.querySelector('#rad');
+  rad.addEventListener('click', function(){
+    degreeType = 'Rad';
+    //TODO add something to show the user that they are using Rad instead of Deg
+  });
+  rad.style.background = "lightgreen";
+  // <button id="sinh" type="button" name="button">sinh</button>
+  var sinh = document.querySelector('#sinh');
+  sinh.addEventListener('click', function(){input.value  += 'sinh(';});
+  sinh.style.background = "yellow";
+  // <button id="cosh" type="button" name="button">cosh</button>
+  var cosh = document.querySelector('#cosh');
+  cosh.addEventListener('click', function(){input.value  += 'cosh(';});
+  cosh.style.background = "yellow";
+  // <button id="tanh" type="button" name="button">tanh</button>
+  var tanh = document.querySelector('#tanh');
+  tanh.addEventListener('click', function(){input.value  += 'tan(';});
+  tanh.style.background = "yellow";
+  // <button id="pi" type="button" name="button">π</button>
+  var pi = document.querySelector('#pi');
+  pi.addEventListener('click', function(){input.value  += 'π'; calc();});
+  pi.style.background = "lightgreen";
+  // <button id="rand" type="button" name="button">Rand</button>
+  var rand = document.querySelector('#rand');
+  rand.addEventListener('click', function(){input.value  += 'rand';});
+  rand.style.background = "yellow";
 
 //   CCCCCCCCCCCCC                       AAA               LLLLLLLLLLL                     CCCCCCCCCCCCC
 // CCC::::::::::::C                     A:::A              L:::::::::L                  CCC::::::::::::C
@@ -148,20 +282,37 @@ window.onload = function () {
       // Here we take out input field and split every character into the expression array;
       expression = input.value.split("");
 
-      // Here we are combining the individual numbers in our array.
-
       // Reset combinedExpression
       var combinedExpression = [];
-      expression.forEach(function (item, index, array) {
+      expression.forEach(function (item, index, array) { // Here we are combining the individual numbers in our array.
+          console.log("FOUND: " + item);
           if (isNaN(item)) {
             // If it's a '.' We still need to add it to the numberCombiner
             if (item === '.') {
-                numberCombiner = numberCombiner + item;
-                if (index === 0) { // If the user types '.' as the first thing, we want to replace that with 0.
-                  numberCombiner = '0.';
-                }
+              numberCombiner = numberCombiner + item;
+              if (index === 0) { // If the user types '.' as the first thing, we want to replace that with 0.
+                numberCombiner = '0.';
+              }
+            } else if (item === 'π'){
+              if (numberCombiner === '') {
+                combinedExpression.push(Math.PI);
+              } else {
+                combinedExpression.push(Number(numberCombiner)*Math.PI);
+                numberCombiner = '';
+              }
+
+            } else if (item === 'e') {
+              if (numberCombiner === '') {
+                combinedExpression.push(Math.E);
+              } else {
+                combinedExpression.push(Number(numberCombiner)*Math.E);
+                numberCombiner = '';
+              }
             } else {
-              combinedExpression.push(numberCombiner);
+
+              if (numberCombiner !== '') {
+                combinedExpression.push(numberCombiner);
+              }
               combinedExpression.push(item);
               numberCombiner = '';
             }
@@ -173,6 +324,7 @@ window.onload = function () {
             }
           }
       });
+      console.log("CE: " + combinedExpression);
 
 
       // ----------------------------------
