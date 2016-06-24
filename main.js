@@ -110,6 +110,7 @@ window.onload = function () {
   var multiply = document.querySelector('#multiply');
   multiply.addEventListener('click', function(){input.value  += '*';});
   var equals = document.querySelector('#equals');
+  equals.addEventListener('click', function(){calc();});
 
   // Numbers
   var numbers = document.querySelectorAll('.number');
@@ -285,7 +286,6 @@ window.onload = function () {
       // Reset combinedExpression
       var combinedExpression = [];
       expression.forEach(function (item, index, array) { // Here we are combining the individual numbers in our array.
-          console.log("FOUND: " + item);
           if (isNaN(item)) {
             // If it's a '.' We still need to add it to the numberCombiner
             if (item === '.') {
@@ -330,7 +330,12 @@ window.onload = function () {
       // ----------------------------------
       //    ORDER OF OPERATION Functions
       // ----------------------------------
+      // Calculate scientific things
+      // Calculate parenthesis
+      // Calculate ^
+      scienceCalc(combinedExpression);
       multiplyAndDivide(combinedExpression);
+      // Calculate = and -
 
 
 
@@ -394,6 +399,14 @@ window.onload = function () {
 // OO:::::::::OO      OO:::::::::OO        CCC::::::::::::C
 //   OOOOOOOOO          OOOOOOOOO             CCCCCCCCCCCCC
 
+
+  function scienceCalc(arr) {
+    var arrAsString = arr.join('');
+    if (arrAsString.indexOf("log") >= 0) {
+      console.log(arrAsString.indexOf("log"));
+      console.log("found log");
+    }
+}
 
 
   function multiplyAndDivide(arr) {
