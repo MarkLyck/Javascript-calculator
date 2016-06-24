@@ -76,6 +76,30 @@ window.onload = function () {
       }
       expressionCounter--;
     }
+    calc();
+  });
+  var percentage = document.querySelector('#percentage');
+  percentage.addEventListener('click', function(){
+    console.log("=== PERCENT ===");
+    expression = input.value.split("");
+    expressionCounter = expression.length -1;
+    var fullNumber = '';
+    while(!isNaN(expression[expressionCounter])) {
+      // console.log(expression[expressionCounter]);
+      fullNumber = expression[expressionCounter] + fullNumber;
+      expression.splice(expressionCounter, 1); //Remove the Number
+      expressionCounter--;
+    }
+    console.log("fullNumber: " + fullNumber);
+    var percentCalculated = Number(fullNumber)/100;
+    if (expression[expressionCounter] === undefined) {
+      expression.unshift(percentCalculated);
+      input.value = expression.join('');
+    } else {
+      expression.splice(expressionCounter + 1, 0, percentCalculated); // add the minus.
+      input.value = expression.join('');
+    }
+    calc();
   });
   // Operators
   var plus = document.querySelector('#addition');
