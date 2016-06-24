@@ -30,46 +30,90 @@ window.onload = function () {
   // TODO, remove this and replace with individual event listeners! BAD PRACTICE
   var buttons = document.getElementsByTagName('button'); // Select all buttons
 
-  var result = document.querySelector('#output'); // Select the result p tag
-  var input = document.querySelector('#input'); // Select the input-field
-  var clear = document.querySelector('#clear'); // Select the clearAll-button
-  var numbers = document.querySelectorAll('.number'); // All the number buttons
+  // Main parts
+  var result = document.querySelector('#output');
+  var input = document.querySelector('#input');
 
-  // Loop through all buttons and add the event listener
-  for (var i = 0; i < buttons.length; i += 1) {
-    buttons[i].addEventListener("click", addValue.bind(null, i));
-  }
-  // This allows to calculate everytime the user types in a number only.
-  for (var index = 0; index < numbers.length; index += 1) {
-    numbers[index].addEventListener("click", calc);
-  }
-  function addValue(i) {
-    // TODO, might be better practice to have individal event listeners for the operations, and numbers be the only ones we loop through.
-      if (buttons[i].innerHTML === '÷') { // We need to replace this with an operator JS can understand
-         input.value  += '/';
-      } else if (buttons[i].innerHTML === 'x') { // We need to replace this with an operator JS can understand
-         input.value  += '*';
-      } else if (buttons[i].innerHTML === 'C') { // For our calculate to clear, we need the input field cleared first
-         input.value = '';
-         result.innerHTML = 0;
-         expression = [];
-         numberCombiner = '';
-         number1 = '';
-         number2 = '';
-         op = '';
-         console.log("=================");
-         console.log("CLEARED");
-         console.log("=================");
-
-      } else if (buttons[i].innerHTML === '=') { // This removes the last character from the input
-        //  input.value = input.value.substr(0, input.value.length - 1);
-         calc();
-      } else {
-         input.value += buttons[i].innerHTML; // This adds the content of the button to the input
+  // Special keys
+  var clear = document.querySelector('#clear');
+  clear.addEventListener('click', function(){
+    input.value = '';
+    result.innerHTML = 0;
+    expression = [];
+    numberCombiner = '';
+    number1 = '';
+    number2 = '';
+    op = '';
+    console.log("=================");
+    console.log("CLEARED");
+    console.log("=================");
+  });
+  var plusMinus = document.querySelector('#plus-minus');
+  plusMinus.addEventListener('click', function(){
+    // TODO, EXTRA feature Find out where the cursor is. and set the index to the cursor location
+    expression = input.value.split("");
+    // Create a loop to go back 1 index at a time, until it reaches something that's NaN
+    expressionCounter = expression.length -1;
+    while(expressionCounter >= -1) {
+      if (isNaN(expression[expressionCounter])) {
+        console.log(expression[expressionCounter]);
+        var newOp = '';
+        if (expression[expressionCounter] === '+') {
+          newOp = '-';
+          expression.splice(expressionCounter, 1); //Remove the operator
+          expression.splice(expressionCounter, 0, newOp); // add the minus.
+        } else if (expression[expressionCounter] === '-') {
+          newOp = '+';
+          expression.splice(expressionCounter, 1); //Remove the operator
+          expression.splice(expressionCounter, 0, newOp); // add the plus.
+        } else if (expression[expressionCounter] === undefined) { // This runs if there's only 1 number
+          newOp = '-';
+          expression.unshift(newOp);
+          input.value = expression.join('');
+        }
+        input.value = expression.join('');
+        break; // When we find a NaN, we break out of the loop
       }
+      expressionCounter--;
+    }
+  });
+  // Operators
+  var plus = document.querySelector('#addition');
+  plus.addEventListener('click', function(){input.value  += '+';});
+  var minus = document.querySelector('#subtract');
+  minus.addEventListener('click', function(){input.value  += '-';});
+  var divide = document.querySelector('#divide');
+  divide.addEventListener('click', function(){input.value  += '/';});
+  var multiply = document.querySelector('#multiply');
+  multiply.addEventListener('click', function(){input.value  += '*';});
+  var equals = document.querySelector('#equals');
 
+  // Numbers
+  var numbers = document.querySelectorAll('.number');
+  for (var index = 0; index < numbers.length; index += 1) {
+    numbers[index].addEventListener("click", addValue.bind(null, index));
+  }
+  function addValue(index) {
+    input.value += numbers[index].innerText;
+    calc();
   }
 
+//   CCCCCCCCCCCCC                       AAA               LLLLLLLLLLL                     CCCCCCCCCCCCC
+// CCC::::::::::::C                     A:::A              L:::::::::L                  CCC::::::::::::C
+// CC:::::::::::::::C                  A:::::A             L:::::::::L                CC:::::::::::::::C
+// C:::::CCCCCCCC::::C                A:::::::A            LL:::::::LL               C:::::CCCCCCCC::::C
+// C:::::C       CCCCCC              A:::::::::A             L:::::L                C:::::C       CCCCCC
+// C:::::C                          A:::::A:::::A            L:::::L               C:::::C
+// C:::::C                        A:::::A A:::::A           L:::::L               C:::::C
+// C:::::C                       A:::::A   A:::::A          L:::::L               C:::::C
+// C:::::C                      A:::::A     A:::::A         L:::::L               C:::::C
+// C:::::C                     A:::::AAAAAAAAA:::::A        L:::::L               C:::::C
+// C:::::C                    A:::::::::::::::::::::A       L:::::L               C:::::C
+// C:::::C       CCCCCC      A:::::AAAAAAAAAAAAA:::::A      L:::::L         LLLLLL C:::::C       CCCCCC
+// C:::::CCCCCCCC::::C      A:::::A             A:::::A   LL:::::::LLLLLLLLL:::::L  C:::::CCCCCCCC::::C
+// CC:::::::::::::::C      A:::::A               A:::::A  L::::::::::::::::::::::L   CC:::::::::::::::C
+// CCC::::::::::::C       A:::::A                 A:::::A L::::::::::::::::::::::L     CCC::::::::::::C
+//   CCCCCCCCCCCCC       AAAAAAA                   AAAAAAALLLLLLLLLLLLLLLLLLLLLLLL        CCCCCCCCCCCCC
 
 
   function calc() {
@@ -108,43 +152,12 @@ window.onload = function () {
 
 
       // ----------------------------------
-      //          ORDER OF OPERATION
+      //    ORDER OF OPERATION Functions
       // ----------------------------------
-      var oooResult = 0;
-      while (combinedExpression.indexOf('*') >= 0 || combinedExpression.indexOf('/') >= 0) {
-        var multiplyIndex = combinedExpression.indexOf('*');
-        var divideIndex = combinedExpression.indexOf('/');
-        if (multiplyIndex > divideIndex) { // If multiply comes first
-          oooResult = Number(combinedExpression[multiplyIndex-1]) * Number(combinedExpression[multiplyIndex+1]);
-          combinedExpression.splice(multiplyIndex + 1, 1);
-          combinedExpression.splice(multiplyIndex, 1);
-          combinedExpression.splice(multiplyIndex - 1, 1);
-          // console.log("CE before: " + combinedExpression);
-          // Splice can't be used if the array is empty, so we need to test this.
-          if (combinedExpression.length === 0) {
-            combinedExpression.push(oooResult);
-          } else if (multiplyIndex - 1 === 0) {
-            combinedExpression.unshift(oooResult);
-          } else {
-            combinedExpression.splice(multiplyIndex - 1, 0, oooResult);
-          }
-        // console.log(combinedExpression);
-        } else { // If divide comes first
-          oooResult = Number(combinedExpression[divideIndex-1]) / Number(combinedExpression[divideIndex+1]);
-          combinedExpression.splice(divideIndex + 1, 1);
-          combinedExpression.splice(divideIndex, 1);
-          combinedExpression.splice(divideIndex - 1, 1);
-          // Splice can't be used if the array is empty, so we need to test this.
-          if (combinedExpression.length === 0) {
-            combinedExpression.push(oooResult);
-          // Splice also can't be used for the first item in an array
-          } else if (divideIndex - 1 === 0) {
-            combinedExpression.unshift(oooResult);
-          } else {
-            combinedExpression.splice(divideIndex - 1, 0, oooResult);
-          }
-        }
-      }
+      multiplyAndDivide(combinedExpression);
+
+
+
 
       // Reset values
       var number1 = '';
@@ -179,6 +192,70 @@ window.onload = function () {
         }
       }); // End Loop
 
+    }
+  } // End calc
+
+
+
+
+
+
+
+//   OOOOOOOOO          OOOOOOOOO             CCCCCCCCCCCCC
+// OO:::::::::OO      OO:::::::::OO        CCC::::::::::::C
+// OO:::::::::::::OO  OO:::::::::::::OO    CC:::::::::::::::C
+// O:::::::OOO:::::::OO:::::::OOO:::::::O  C:::::CCCCCCCC::::C
+// O::::::O   O::::::OO::::::O   O::::::O C:::::C       CCCCCC
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C
+// O::::::O   O::::::OO::::::O   O::::::O C:::::C       CCCCCC
+// O:::::::OOO:::::::OO:::::::OOO:::::::O  C:::::CCCCCCCC::::C
+// OO:::::::::::::OO  OO:::::::::::::OO    CC:::::::::::::::C
+// OO:::::::::OO      OO:::::::::OO        CCC::::::::::::C
+//   OOOOOOOOO          OOOOOOOOO             CCCCCCCCCCCCC
+
+
+
+  function multiplyAndDivide(arr) {
+    var oooResult = 0;
+    // Multiplication and Dividends
+    while (arr.indexOf('*') >= 0 || arr.indexOf('/') >= 0) {
+      var multiplyIndex = arr.indexOf('*');
+      var divideIndex = arr.indexOf('/');
+      if (multiplyIndex > divideIndex) { // If multiply comes first
+        oooResult = Number(arr[multiplyIndex-1]) * Number(arr[multiplyIndex+1]);
+        arr.splice(multiplyIndex + 1, 1);
+        arr.splice(multiplyIndex, 1);
+        arr.splice(multiplyIndex - 1, 1);
+        // console.log("CE before: " + combinedExpression);
+        // Splice can't be used if the array is empty, so we need to test this.
+        if (arr.length === 0) {
+          arr.push(oooResult);
+        } else if (multiplyIndex - 1 === 0) {
+          arr.unshift(oooResult);
+        } else {
+          arr.splice(multiplyIndex - 1, 0, oooResult);
+        }
+      // console.log(combinedExpression);
+      } else { // If divide comes first
+        oooResult = Number(arr[divideIndex-1]) / Number(arr[divideIndex+1]);
+        arr.splice(divideIndex + 1, 1);
+        arr.splice(divideIndex, 1);
+        arr.splice(divideIndex - 1, 1);
+        // Splice can't be used if the array is empty, so we need to test this.
+        if (arr.length === 0) {
+          arr.push(oooResult);
+        // Splice also can't be used for the first item in an array
+        } else if (divideIndex - 1 === 0) {
+          arr.unshift(oooResult);
+        } else {
+          arr.splice(divideIndex - 1, 0, oooResult);
+        }
+      }
     }
   }
 };
