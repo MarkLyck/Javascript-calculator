@@ -1,0 +1,89 @@
+body, html {
+  height: 100%;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  width: 25%;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+}
+
+.output-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 10vw;
+  background: #6A63F1;
+  width: 100%;
+  height: 30vh;
+}
+
+.wrapper {
+  height: 70vh;
+}
+
+form {
+  display: flex;
+}
+form > input {
+  width: 75%;
+  height: 14vh;
+  outline: none;
+  padding-left: 25px;
+  box-sizing: border-box;
+}
+form > button {
+  width: 25%;
+  background: #FFAF65;
+  border: 0;
+}
+
+.input-container {
+  display: flex;
+}
+
+.input-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  width: 75%;
+  background: #333847;
+}
+
+.input-numbers button {
+  height: 14vh;
+  min-width: calc(100%/3);
+  background: #2F3343;
+  border: 1px solid #333847;
+}
+
+.input-numbers button:hover {
+  color: #6A63F1;
+}
+
+.operators {
+  display: flex;
+  width: 25%;
+  flex-direction: column;
+}
+
+.operators button {
+  width: 100%;
+  height: 14vh;
+  background: #2F3343;
+  border: 1px solid #333847;
+}
+
+.operators button:hover {
+  color: #6A63F1;
+}
