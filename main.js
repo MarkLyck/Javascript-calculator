@@ -603,7 +603,7 @@ function scienceCalc(arr) {
 
 function parenthesis(arr) {
   var arrAsString = arr.join('');
-  if (arr.indexOf("(") >= 0) { // If the expression contains a (
+  while (arr.indexOf("(") >= 0 && arr.indexOf(")") >= 0) { // If the expression contains a (
     var regExp = /\(([^)]+)\)/;
     var matches = regExp.exec(arrAsString); // This will throw an error if there's no ending parenthesis
     var testArray = matches[1].split("");
