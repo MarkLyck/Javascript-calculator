@@ -343,7 +343,6 @@ window.onload = function () {
           }
         }
     });
-    console.log("CE: " + outputArray);
     return outputArray;
   }
 
@@ -368,6 +367,7 @@ window.onload = function () {
 
 
 function scienceCalc(arr) {
+  console.log('CE BEFORE: ' + arr);
   var arrAsString = arr.join('');
   while (arrAsString.indexOf("log(") >= 0) { // If the expression contains log
     console.log("=== LOG ===");
@@ -381,20 +381,15 @@ function scienceCalc(arr) {
     testArray = multiplyAndDivide(testArray);
     var logResult = plusAndMinus(testArray);
     logResult = Math.log10(logResult);
-    console.log('RESULT: ' + logResult);
-    // var indexesToSplice = arr.indexOf("log(") - arr.indexOf(")");
 
-    console.log("ARRAY: " + arr);
-
-    console.log("CON: " + arr.indexOf("l"));
     var logIndex = arr.indexOf('l');
     if (logIndex >= 0 && arr[logIndex+1] === 'o' && arr[logIndex+2] === 'g'){
-      console.log("LOG calculation");
-      arr.splice(logIndex, indexesToSplice + 5);
+      arr.splice(logIndex, indexesToSplice + 4);
       arr.splice(logIndex, 0, logResult);
     }
     arrAsString = arr.join(''); // Reset arrAsString
   }
+  console.log('CE RETURN: ' + arr);
   return arr;
 }
 
