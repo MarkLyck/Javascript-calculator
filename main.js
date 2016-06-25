@@ -145,11 +145,11 @@ window.onload = function () {
   // <button id="parenthesis-1" type="button" name="button">(</button>
   var par1 = document.querySelector('#parenthesis-1');
   par1.addEventListener('click', function(){input.value  += '(';});
-  par1.style.background = "yellow";
+  par1.style.background = "lightgreen";
   // <button id="parenthesis-2" type="button" name="button">)</button>
   var par2 = document.querySelector('#parenthesis-2');
   par2.addEventListener('click', function(){input.value  += ')'; calc();});
-  par2.style.background = "yellow";
+  par2.style.background = "lightgreen";
   // <button id="mc" type="button" name="button">mc</button>
   // <button id="mPlus" type="button" name="button">m+</button>
   // <button id="mMinus-2" type="button" name="button">m-</button>
@@ -200,7 +200,7 @@ window.onload = function () {
   // <button id="logTen" type="button" name="button">log10</button>
   var log = document.querySelector('#log-ten');
   log.addEventListener('click', function(){input.value  += 'log(';});
-  log.style.background = "yellow";
+  log.style.background = "lightgreen";
   //
   // <button id="XEsclamation" type="button" name="button">X!</button>
   var factor = document.querySelector('#factor');
@@ -286,13 +286,13 @@ window.onload = function () {
       // ----------------------------------
       //    ORDER OF OPERATION Functions
       // ----------------------------------
-      // parenthesis
-      parenthesis(combinedExpression);
       // Calculate scientific things
-      scienceCalc(combinedExpression);
+      combinedExpression = scienceCalc(combinedExpression);
+      // parenthesis
+      combinedExpression = parenthesis(combinedExpression);
       // Calculate ^ and sqr
       // Calculate * & /
-      multiplyAndDivide(combinedExpression);
+      combinedExpression = multiplyAndDivide(combinedExpression);
       // Calculate + and -
       var finalResult = plusAndMinus(combinedExpression);
       result.innerHTML = finalResult;
@@ -354,17 +354,49 @@ window.onload = function () {
 // OO:::::::::::::OO  OO:::::::::::::OO    CC:::::::::::::::C
 // O:::::::OOO:::::::OO:::::::OOO:::::::O  C:::::CCCCCCCC::::C
 // O::::::O   O::::::OO::::::O   O::::::O C:::::C       CCCCCC
-// O:::::O     O:::::OO:::::O     O:::::OC:::::C
-// O:::::O     O:::::OO:::::O     O:::::OC:::::C
-// O:::::O     O:::::OO:::::O     O:::::OC:::::C
-// O:::::O     O:::::OO:::::O     O:::::OC:::::C
-// O:::::O     O:::::OO:::::O     O:::::OC:::::C
-// O:::::O     O:::::OO:::::O     O:::::OC:::::C
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C        CCCCCC
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C        CCCCCC
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C        CCCCCC
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C        CCCCCC
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C        CCCCCC
+// O:::::O     O:::::OO:::::O     O:::::OC:::::C        CCCCCC
 // O::::::O   O::::::OO::::::O   O::::::O C:::::C       CCCCCC
 // O:::::::OOO:::::::OO:::::::OOO:::::::O  C:::::CCCCCCCC::::C
 // OO:::::::::::::OO  OO:::::::::::::OO    CC:::::::::::::::C
 // OO:::::::::OO      OO:::::::::OO        CCC::::::::::::C
 //   OOOOOOOOO          OOOOOOOOO             CCCCCCCCCCCCC
+
+
+function scienceCalc(arr) {
+  var arrAsString = arr.join('');
+  while (arrAsString.indexOf("log(") >= 0) { // If the expression contains log
+    console.log("=== LOG ===");
+    var regExp = '(log)\(([^)]+)\)';
+    var log = arrAsString.match(regExp)[2];
+    var testArray = log.split('');
+    var indexesToSplice = testArray.length;
+    testArray.shift(); // Remove a leftover parenthesis at the beginning
+    testArray = combineArray(testArray);
+    testArray = parenthesis(testArray);
+    testArray = multiplyAndDivide(testArray);
+    var logResult = plusAndMinus(testArray);
+    logResult = Math.log10(logResult);
+    console.log('RESULT: ' + logResult);
+    // var indexesToSplice = arr.indexOf("log(") - arr.indexOf(")");
+
+    console.log("ARRAY: " + arr);
+
+    console.log("CON: " + arr.indexOf("l"));
+    var logIndex = arr.indexOf('l');
+    if (logIndex >= 0 && arr[logIndex+1] === 'o' && arr[logIndex+2] === 'g'){
+      console.log("LOG calculation");
+      arr.splice(logIndex, indexesToSplice + 5);
+      arr.splice(logIndex, 0, logResult);
+    }
+    arrAsString = arr.join(''); // Reset arrAsString
+  }
+  return arr;
+}
 
 function parenthesis(arr) {
   var arrAsString = arr.join('');
@@ -376,31 +408,18 @@ function parenthesis(arr) {
     testArray = multiplyAndDivide(testArray);
     var parenthesisResult = plusAndMinus(testArray);
     if (testArray.indexOf("(") >= 0) { // If there are nested parenthesis
-      console.log("NESTED ()");
-      // TODO
-      // Create an array of the nested parenthesis and run this function for that array.
-      // return it as a variable that will be the result.
+      console.log("ERROR: No support for nested parentheses yet.");
+      // TODO allow nested parentheses
     } else {
       // Splice arr starting at the first '(' and ending at the first '('
       var indexesToSplice = arr.indexOf(")") - arr.indexOf("(");
-      arr.splice(arr.indexOf("("), indexesToSplice);
-      arr.splice(arr.indexOf("("), 0, parenthesisResult);
-      console.log("Array end: " + arr);
+      var insertAtIndex = arr.indexOf("(");
+      arr.splice(insertAtIndex, indexesToSplice + 1);
+      arr.splice(insertAtIndex, 0, parenthesisResult);
     }
   }
   return arr;
 }
-
-  function scienceCalc(arr) {
-    var arrAsString = arr.join('');
-    if (arrAsString.indexOf("log(") >= 0) { // If the expression contains log
-      console.log("=== LOG ===");
-      var regExp = /\(([^)]+)\)/;
-      var matches = regExp.exec(arrAsString); // This will throw an error if there's no ending parenthesis
-      console.log(matches[1]);
-    }
-  }
-
 
   function multiplyAndDivide(arr) {
     var oooResult = 0;
