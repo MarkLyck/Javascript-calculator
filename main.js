@@ -159,40 +159,40 @@ window.onload = function () {
   // <button id="X2" type="button" name="button">X2</button>
   var squared = document.querySelector('#squared');
   squared.addEventListener('click', function(){input.value  += '^2';});
-  squared.style.background = "yellow";
+  squared.style.background = "lightgreen";
   // <button id="X3" type="button" name="button">X3</button>
   var squared3 = document.querySelector('#squared-3');
   squared3.addEventListener('click', function(){input.value  += '^3';});
-  squared3.style.background = "yellow";
+  squared3.style.background = "lightgreen";
   // <button id="Xy" type="button" name="button">Xy</button>
   var squaredy = document.querySelector('#squared-y');
   squaredy.addEventListener('click', function(){input.value  += '^';});
-  squaredy.style.background = "yellow";
+  squaredy.style.background = "lightgreen";
   // <button id="eX" type="button" name="button">eX</button>
   var eSquared = document.querySelector('#e-squared');
   eSquared.addEventListener('click', function(){input.value  += 'e^';});
-  eSquared.style.background = "yellow";
+  eSquared.style.background = "lightgreen";
   // <button id="tenX" type="button" name="button">10X</button>
   var tenSquared = document.querySelector('#ten-squared');
   tenSquared.addEventListener('click', function(){input.value  += '10^';});
-  tenSquared.style.background = "yellow";
+  tenSquared.style.background = "lightgreen";
 
   // <button id="oneDividendX" type="button" name="button">1/X</button>
   var oneDivided = document.querySelector('#one-divided-x');
   oneDivided.addEventListener('click', function(){input.value  += '1/';});
-  oneDivided.style.background = "yellow";
+  oneDivided.style.background = "lightgreen";
   // <button id="twoSquareRootX" type="button" name="button">2SQX</button>
   var twoSquareRoot = document.querySelector('#two-squareroot-x');
-  twoSquareRoot.addEventListener('click', function(){input.value  += '2sqr(';});
-  twoSquareRoot.style.background = "yellow";
+  twoSquareRoot.addEventListener('click', function(){input.value  += '2sqrt(';});
+  twoSquareRoot.style.background = "lightgreen";
   // <button id="threeSquareRootX" type="button" name="button">3SQX</button>
   var threeSquareRoot = document.querySelector('#three-squareroot-x');
-  threeSquareRoot.addEventListener('click', function(){input.value  += '3sqr(';});
-  threeSquareRoot.style.background = "yellow";
+  threeSquareRoot.addEventListener('click', function(){input.value  += '3sqrt(';});
+  threeSquareRoot.style.background = "lightgreen";
   // <button id="ySquareRootX" type="button" name="button">2SQX</button>
   var ySquareRoot = document.querySelector('#y-squareRoot-x');
-  ySquareRoot.addEventListener('click', function(){input.value  += 'sqr(';});
-  ySquareRoot.style.background = "yellow";
+  ySquareRoot.addEventListener('click', function(){input.value  += 'sqrt(';});
+  ySquareRoot.style.background = "lightgreen";
   // <button id="ln" type="button" name="button">ln</button>
   var ln = document.querySelector('#ln');
   ln.addEventListener('click', function(){input.value  += 'ln(';});
@@ -205,7 +205,7 @@ window.onload = function () {
   // <button id="XEsclamation" type="button" name="button">X!</button>
   var factor = document.querySelector('#factor');
   factor.addEventListener('click', function(){input.value  += '!';});
-  factor.style.background = "yellow";
+  factor.style.background = "lightgreen";
   // <button id="sin" type="button" name="button">sin</button>
   var sin = document.querySelector('#sin');
   sin.addEventListener('click', function(){input.value  += 'sin(';});
@@ -231,8 +231,13 @@ window.onload = function () {
   // <button id="rad" type="button" name="button">Rad</button>
   var rad = document.querySelector('#rad');
   rad.addEventListener('click', function(){
-    degreeType = 'Rad';
-    //TODO add something to show the user that they are using Rad instead of Deg
+    if (degreeType === 'Deg') {
+      degreeType = 'Rad';
+      rad.innerText = "Deg";
+    } else {
+      degreeType = 'Deg';
+      rad.innerText = "Rad";
+    }
   });
   rad.style.background = "lightgreen";
   // <button id="sinh" type="button" name="button">sinh</button>
@@ -362,6 +367,7 @@ function orderOfOperations(arr) {
   // parenthesis
   arr = parenthesis(arr);
   // Calculate ^ and sqr
+  arr = exponentsAndSqrt(arr);
   // Calculate * & /
   arr = multiplyAndDivide(arr);
   // Calculate + and -
@@ -385,6 +391,31 @@ function scienceCalc(arr) {
   var regExp = '';
   var testArray = [];
   var indexesToSplice = 0;
+
+  // Factorial
+  while (arr.indexOf("!") >= 0) { // If the expression contains log
+    var factorIndex = arr.indexOf("!");
+    var factor = arr[arr.indexOf("!")-1];
+    var factorArray = [];
+    while (factor > 0) {
+      factorArray.push(String(factor));
+      factorArray.push('*');
+      factor--;
+    }
+    factorArray.pop();
+    var factorResult = orderOfOperations(factorArray);
+    arr.splice(factorIndex-1, 2); // Remove the !
+
+    if (arr.length === 0) {
+      arr.push(factorResult);
+    } else if (factorIndex - 1 === 0) {
+      arr.unshift(factorResult);
+    } else {
+      arr.splice(factorIndex - 1, 0, factorResult);
+    }
+  }
+
+
   // LOG
   while (arrAsString.indexOf("log(") >= 0) { // If the expression contains log
     console.log("=== LOG ===");
@@ -604,6 +635,11 @@ function scienceCalc(arr) {
 function parenthesis(arr) {
   var arrAsString = arr.join('');
   while (arr.indexOf("(") >= 0 && arr.indexOf(")") >= 0) { // If the expression contains a (
+    console.log('=== () ===');
+    if (arr[arr.indexOf('(') - 4] === 's' && arr[arr.indexOf('(') - 3] === 'q' && arr[arr.indexOf('(') - 2] === 'r' && arr[arr.indexOf('(') - 1] === 't') {
+      console.log("found SQRT exception");
+      break;
+    }
     var regExp = /\(([^)]+)\)/;
     var matches = regExp.exec(arrAsString); // This will throw an error if there's no ending parenthesis
     var testArray = matches[1].split("");
@@ -626,6 +662,64 @@ function parenthesis(arr) {
 
 
 
+
+function exponentsAndSqrt(arr) {
+  var exponentResult = 0;
+  var arrAsString = arr.join('');
+  // Multiplication and Dividends
+  while (arr.indexOf('^') >= 0 || arrAsString.indexOf('sqrt') >= 0) {
+    var exponentIndex = arr.indexOf('^');
+    var sqrtIndex = arrAsString.indexOf('sqrt');
+    if (exponentIndex > sqrtIndex) { // If exponent comes first
+      exponentResult = Math.pow(Number(arr[exponentIndex-1]), Number(arr[exponentIndex+1]));
+      arr.splice(exponentIndex + 1, 1);
+      arr.splice(exponentIndex, 1);
+      arr.splice(exponentIndex - 1, 1);
+      // Splice can't be used if the array is empty, so we need to test this.
+      if (arr.length === 0) {
+        arr.push(exponentResult);
+      } else if (exponentIndex - 1 === 0) {
+        arr.unshift(exponentResult);
+      } else {
+        arr.splice(exponentIndex - 1, 0, exponentResult);
+      }
+    } else { // If sqrt comes first
+      console.log("=== SQRT ===");
+      regExp = '(sqrt)\(([^)]+)\)';
+      var sqrt = arrAsString.match(regExp)[2];
+      testArray = sqrt.split('');
+      testArray.shift(); // Remove a leftover parenthesis at the beginning
+      testArray = combineArray(testArray);
+      indexesToSplice = testArray.length;
+      var sqrtResult = orderOfOperations(testArray);
+      sqrtResult = Math.sqrt(sqrtResult);
+      if (!isNaN(Number(arr[arrAsString.indexOf('sqrt') -1]))) { // If the squaretoor is preceeded by a number
+        console.log('PRECEEDED BY NUM');
+        sqrtResult = Math.sqrt(sqrtResult) * arr[arrAsString.indexOf('sqrt') -1];
+      }
+      console.log('RESULT: ' + sqrtResult);
+
+
+      sqrtIndex = arr.indexOf('s');
+      if (sqrtIndex >= 0 && arr[sqrtIndex+1] === 'q' && arr[sqrtIndex+2] === 'r' && arr[sqrtIndex+3] === 't' && arr[sqrtIndex+4] === '(' && !isNaN(arr[sqrtIndex-1])) {
+        console.log('success?');
+        sqrtResult = Math.sqrt(sqrtResult) * arr[arrAsString.indexOf('sqrt') -1];
+        arr.splice(sqrtIndex - 1, indexesToSplice + 6);
+        arr.splice(sqrtIndex -1, 0, sqrtResult);
+      } else if (sqrtIndex >= 0 && arr[sqrtIndex+1] === 'q' && arr[sqrtIndex+2] === 'r' && arr[sqrtIndex+3] === 't' && arr[sqrtIndex+4] === '('){
+        arr.splice(sqrtIndex, indexesToSplice + 5);
+        arr.splice(sqrtIndex, 0, sqrtResult);
+      } else {
+        console.log("========================");
+        console.log("Couldn't find sqrt");
+        console.log("========================");
+        break;
+      }
+      arrAsString = arr.join(''); // Reset arrAsString
+    }
+  }
+  return arr;
+}
 
 
 
