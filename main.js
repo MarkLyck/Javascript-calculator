@@ -8,7 +8,6 @@
 window.onload = function () {
 
   var expression = [];
-  var numberCombiner = '';
   var number1 = '';
   var number2 = '';
   var op = '';
@@ -279,106 +278,74 @@ window.onload = function () {
     if(input.value === '') { // If the input is empty, we just set the result to 0;
       result.innerHTML = 0;
     } else {
-
       // Here we take out input field and split every character into the expression array;
       expression = input.value.split("");
 
-      // Reset combinedExpression
-      var combinedExpression = [];
-      expression.forEach(function (item, index, array) { // Here we are combining the individual numbers in our array.
-          if (isNaN(item)) {
-            // If it's a '.' We still need to add it to the numberCombiner
-            if (item === '.') {
-              numberCombiner = numberCombiner + item;
-              if (index === 0) { // If the user types '.' as the first thing, we want to replace that with 0.
-                numberCombiner = '0.';
-              }
-            } else if (item === 'π'){
-              if (numberCombiner === '') {
-                combinedExpression.push(Math.PI);
-              } else {
-                combinedExpression.push(Number(numberCombiner)*Math.PI);
-                numberCombiner = '';
-              }
-
-            } else if (item === 'e') {
-              if (numberCombiner === '') {
-                combinedExpression.push(Math.E);
-              } else {
-                combinedExpression.push(Number(numberCombiner)*Math.E);
-                numberCombiner = '';
-              }
-            } else {
-
-              if (numberCombiner !== '') {
-                combinedExpression.push(numberCombiner);
-              }
-              combinedExpression.push(item);
-              numberCombiner = '';
-            }
-          } else { // Else we add them to the numberCombiner
-            numberCombiner = numberCombiner + item;
-            if (index === array.length - 1) { // If the last item is a number, we just want to push it.
-              combinedExpression.push(numberCombiner);
-              numberCombiner = '';
-            }
-          }
-      });
-      console.log("CE: " + combinedExpression);
-
+      var combinedExpression = combineArray(expression);
 
       // ----------------------------------
       //    ORDER OF OPERATION Functions
       // ----------------------------------
+      // parenthesis
+      parenthesis(combinedExpression);
       // Calculate scientific things
-      // Calculate parenthesis
-      // Calculate ^
       scienceCalc(combinedExpression);
+      // Calculate ^ and sqr
+      // Calculate * & /
       multiplyAndDivide(combinedExpression);
-      // Calculate = and -
-
-
-
-
-      // Reset values
-      var number1 = '';
-      var op = '';
-      // Loop through array and calculate left to right.
-      combinedExpression.forEach(function (item, index, array) {
-        if (array.length === 1) {
-          result.innerHTML = item;
-        }
-        if (index === 0) {
-          number1 = item;
-        } else if (isNaN(item)) {
-          op = item;
-        } else {
-          number2 = item;
-          // ----------------------------------
-          //   LAST ADDITION AND SUBTRACTION
-          // ----------------------------------
-          if (op === '+') {
-            console.log(Number(number1) + Number(number2));
-            number1 = Number(number1) + Number(number2);
-            result.innerHTML = number1;
-          } else if (op === '-') {
-            console.log(Number(number1) - Number(number2));
-            number1 = Number(number1) - Number(number2);
-            result.innerHTML = number1;
-          } else {
-            console.log("========================");
-            console.log("ERROR: Unknown operator: " + op);
-            console.log("========================");
-          }
-        }
-      }); // End Loop
-
+      // Calculate + and -
+      var finalResult = plusAndMinus(combinedExpression);
+      result.innerHTML = finalResult;
     }
   } // End calc
 
 
 
+  function combineArray(arr) {
+    var outputArray = [];
+    var numberCombiner = '';
+    arr.forEach(function (item, index, array) { // Here we are combining the individual numbers in our array.
+        if (isNaN(item)) {
+          // If it's a '.' We still need to add it to the numberCombiner
+          if (item === '.') {
+            numberCombiner = numberCombiner + item;
+            if (index === 0) { // If the user types '.' as the first thing, we want to replace that with 0.
+              numberCombiner = '0.';
+            }
+          } else if (item === 'π'){
+            if (numberCombiner === '') {
+              outputArray.push(Math.PI);
+            } else {
+              outputArray.push(Number(numberCombiner)*Math.PI);
+              numberCombiner = '';
+            }
 
+          } else if (item === 'e') {
+            if (numberCombiner === '') {
+              outputArray.push(Math.E);
+            } else {
+              outputArray.push(Number(numberCombiner)*Math.E);
+              numberCombiner = '';
+            }
+          } else {
+
+            if (numberCombiner !== '') {
+              outputArray.push(numberCombiner);
+            }
+            outputArray.push(item);
+            numberCombiner = '';
+          }
+        } else { // Else we add them to the numberCombiner
+          numberCombiner = numberCombiner + item;
+          if (index === array.length - 1) { // If the last item is a number, we just want to push it.
+            outputArray.push(numberCombiner);
+            numberCombiner = '';
+          }
+        }
+    });
+    console.log("CE: " + outputArray);
+    return outputArray;
+  }
 
 
 
@@ -399,14 +366,40 @@ window.onload = function () {
 // OO:::::::::OO      OO:::::::::OO        CCC::::::::::::C
 //   OOOOOOOOO          OOOOOOOOO             CCCCCCCCCCCCC
 
+function parenthesis(arr) {
+  var arrAsString = arr.join('');
+  if (arr.indexOf("(") >= 0) { // If the expression contains a (
+    var regExp = /\(([^)]+)\)/;
+    var matches = regExp.exec(arrAsString); // This will throw an error if there's no ending parenthesis
+    var testArray = matches[1].split("");
+    testArray = combineArray(testArray);
+    testArray = multiplyAndDivide(testArray);
+    var parenthesisResult = plusAndMinus(testArray);
+    if (testArray.indexOf("(") >= 0) { // If there are nested parenthesis
+      console.log("NESTED ()");
+      // TODO
+      // Create an array of the nested parenthesis and run this function for that array.
+      // return it as a variable that will be the result.
+    } else {
+      // Splice arr starting at the first '(' and ending at the first '('
+      var indexesToSplice = arr.indexOf(")") - arr.indexOf("(");
+      arr.splice(arr.indexOf("("), indexesToSplice);
+      arr.splice(arr.indexOf("("), 0, parenthesisResult);
+      console.log("Array end: " + arr);
+    }
+  }
+  return arr;
+}
 
   function scienceCalc(arr) {
     var arrAsString = arr.join('');
-    if (arrAsString.indexOf("log") >= 0) {
-      console.log(arrAsString.indexOf("log"));
-      console.log("found log");
+    if (arrAsString.indexOf("log(") >= 0) { // If the expression contains log
+      console.log("=== LOG ===");
+      var regExp = /\(([^)]+)\)/;
+      var matches = regExp.exec(arrAsString); // This will throw an error if there's no ending parenthesis
+      console.log(matches[1]);
     }
-}
+  }
 
 
   function multiplyAndDivide(arr) {
@@ -446,5 +439,53 @@ window.onload = function () {
         }
       }
     }
+    return arr;
   }
-};
+
+
+
+
+  function plusAndMinus(arr) {
+    // Reset values
+    var number1 = '';
+    var op = '';
+    // Loop through array and calculate left to right.
+    arr.forEach(function (item, index, array) {
+      if (array.length === 1) {
+        result.innerHTML = item;
+      }
+      if (index === 0) {
+        number1 = item;
+      } else if (isNaN(item)) {
+        op = item;
+      } else {
+        number2 = item;
+        // ----------------------------------
+        //   LAST ADDITION AND SUBTRACTION
+        // ----------------------------------
+        if (op === '+') {
+          console.log(Number(number1) + Number(number2));
+          number1 = Number(number1) + Number(number2);
+          result.innerHTML = number1;
+        } else if (op === '-') {
+          console.log(Number(number1) - Number(number2));
+          number1 = Number(number1) - Number(number2);
+          result.innerHTML = number1;
+        } else {
+          console.log("========================");
+          console.log("ERROR: Unknown operator: " + op);
+          console.log("========================");
+        }
+      }
+    }); // End Loop
+    return number1;
+  }
+
+
+
+
+
+
+
+
+}; // End window.onload
