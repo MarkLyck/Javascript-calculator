@@ -11,11 +11,12 @@ window.onload = function () {
   var alternate = false;
   var EEcalc = false;
   var memory = 0;
-  var lastpressed = '';
+  var lastPressed = '';
 
   // When the user clicks any calculator buttons, see if we need to change the clear button
   var calculator = document.querySelector('.calculations-wrapper');
-  calculator.addEventListener('click', function() {
+  calculator.addEventListener('click', function(e) {
+    lastPressed = e.target.innerText;
     if (input.value.length > 0) {
       clear.innerHTML = 'C';
     }
@@ -38,12 +39,8 @@ window.onload = function () {
         clear.innerHTML = 'AC';
       }
       e.preventDefault(); // Doesn't work
-    //   input.value = input.value.substr(0, input.value.length - 1);
-    //   calc();
     }
   });
-  // TODO, remove this and replace with individual event listeners! BAD PRACTICE
-  var buttons = document.getElementsByTagName('button'); // Select all buttons
 
   // Main parts
   var result = document.querySelector('#output');
@@ -59,7 +56,7 @@ window.onload = function () {
     result.innerHTML = 0;
     clear.innerHTML = 'AC';
     expression = [];
-    numberCombiner = '';
+    // numberCombiner = '';
     number1 = '';
     number2 = '';
     op = '';
@@ -70,9 +67,7 @@ window.onload = function () {
   var plusMinus = document.querySelector('#plus-minus');
   plusMinus.addEventListener('click', function(){
     console.log('=== INVERT ===');
-    // TODO, EXTRA feature Find out where the cursor is. and set the index to the cursor location
     expression = input.value.split("");
-    // Create a loop to go back 1 index at a time, until it reaches something that's NaN
     expressionCounter = expression.length -1;
     while(expressionCounter >= -1) {
       if (isNaN(expression[expressionCounter])) {
@@ -120,45 +115,56 @@ window.onload = function () {
   // Operators
   var plus = document.querySelector('#addition');
   plus.addEventListener('click', function(){
-    if (input.value.charAt(input.value.length-2) === '+' ||
-    input.value.charAt(input.value.length-2) === '-' ||
-    input.value.charAt(input.value.length-2) === '*' ||
-    input.value.charAt(input.value.length-2) === '/') {
-      console.log('Too many operators in concession');
+    // This makes sure the user can't type in too many operators in concession
+    if ((input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '-' )) {
+      console.log("Too many operators in concession");
     } else {
       input.value  += '+';
     }
-
   });
   var minus = document.querySelector('#subtract');
   minus.addEventListener('click', function(){
-    if (input.value.charAt(input.value.length-2) === '+' ||
-    input.value.charAt(input.value.length-2) === '-' ||
-    input.value.charAt(input.value.length-2) === '*' ||
-    input.value.charAt(input.value.length-2) === '/') {
-      console.log('Too many operators in concession');
+    // This makes sure the user can't type in too many operators in concession
+    if ((input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '-' )) {
+      console.log("Too many operators in concession");
     } else {
       input.value  += '-';
     }
   });
   var divide = document.querySelector('#divide');
   divide.addEventListener('click', function(){
-    if (input.value.charAt(input.value.length-2) === '+' ||
-    input.value.charAt(input.value.length-2) === '-' ||
-    input.value.charAt(input.value.length-1) === '*' ||
-    input.value.charAt(input.value.length-1) === '/') {
-      console.log('Too many operators in concession');
+    // This makes sure the user can't type in too many operators in concession
+    if ((input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-1) === '*') ||
+        (input.value.charAt(input.value.length-1) === '/')) {
+      console.log("Too many operators in concession");
     } else {
       input.value  += '/';
     }
   });
   var multiply = document.querySelector('#multiply');
   multiply.addEventListener('click', function(){
-    if (input.value.charAt(input.value.length-2) === '+' ||
-    input.value.charAt(input.value.length-2) === '-' ||
-    input.value.charAt(input.value.length-1) === '*' ||
-    input.value.charAt(input.value.length-1) === '/') {
-      console.log('Too many operators in concession');
+    // This makes sure the user can't type in too many operators in concession
+    if ((input.value.charAt(input.value.length-1) === '+' ) ||
+        (input.value.charAt(input.value.length-1) === '-' ) ||
+        (input.value.charAt(input.value.length-1) === '*') ||
+        (input.value.charAt(input.value.length-1) === '/')) {
+      console.log("Too many operators in concession");
     } else {
       input.value  += '*';
     }
@@ -201,33 +207,28 @@ window.onload = function () {
 // SSSSSSSSSSSSSSS           CCCCCCCCCCCCC  IIIIIIIIII  EEEEEEEEEEEEEEEEEEEEEE
 
   // Scientific Functions
-  // <button id="parenthesis-1" type="button" name="button">(</button>
   var par1 = document.querySelector('#parenthesis-1');
   par1.addEventListener('click', function(){input.value  += '(';});
-  // <button id="parenthesis-2" type="button" name="button">)</button>
   var par2 = document.querySelector('#parenthesis-2');
   par2.addEventListener('click', function(){input.value  += ')'; calc();});
-  // <button id="mc" type="button" name="button">mc</button>
+
   // TODO when memory is altered add a little text in the output field that displays it's value
   var mc = document.querySelector('#mc');
   mc.addEventListener('click', function(){memory = 0;});
-  // <button id="mPlus" type="button" name="button">m+</button>
   var mPlus = document.querySelector('#mPlus');
   mPlus.addEventListener('click', function(){
     memory = memory + Number(calc());
     console.log("MEM: " + memory);
   });
-  // <button id="mMinus-2" type="button" name="button">m-</button>
   var mMinus = document.querySelector('#mMinus');
   mMinus.addEventListener('click', function(){
     memory = memory - Number(calc());
     console.log("MEM: " + memory);
   });
-  // <button id="mr" type="button" name="button">mr</button>
   var mr = document.querySelector('#mr');
   mr.addEventListener('click', function(){input.value  += memory; calc();});
-  //
-  // <button id="second" type="button" name="button">2nd</button>
+
+
   var second = document.querySelector('#second');
   second.addEventListener('click', function(){
     if (alternate === false ) {
@@ -258,57 +259,46 @@ window.onload = function () {
       tanh.innerHTML = 'tanh';
     }
   });
-  // <button id="X2" type="button" name="button">X2</button>
+
   var squared = document.querySelector('#squared');
   squared.addEventListener('click', function(){input.value  += '^2';});
-  // <button id="X3" type="button" name="button">X3</button>
   var squared3 = document.querySelector('#squared-3');
   squared3.addEventListener('click', function(){input.value  += '^3';});
-  // <button id="Xy" type="button" name="button">Xy</button>
   var squaredy = document.querySelector('#squared-y');
   squaredy.addEventListener('click', function(){input.value  += '^';});
-  // <button id="eX" type="button" name="button">eX</button>
   var eSquared = document.querySelector('#e-squared');
   eSquared.addEventListener('click', function(){input.value  += 'e^';});
-  // <button id="tenX" type="button" name="button">10X</button>
   var tenSquared = document.querySelector('#ten-squared');
   tenSquared.addEventListener('click', function(){input.value  += '10^';});
 
-  // <button id="oneDividendX" type="button" name="button">1/X</button>
   var oneDivided = document.querySelector('#one-divided-x');
   oneDivided.addEventListener('click', function(){input.value  += '1/';});
-  // <button id="twoSquareRootX" type="button" name="button">2SQX</button>
+
   var twoSquareRoot = document.querySelector('#two-squareroot-x');
   twoSquareRoot.addEventListener('click', function(){input.value  += '2sqrt(';});
-  // <button id="threeSquareRootX" type="button" name="button">3SQX</button>
   var threeSquareRoot = document.querySelector('#three-squareroot-x');
   threeSquareRoot.addEventListener('click', function(){input.value  += '3sqrt(';});
-  // <button id="ySquareRootX" type="button" name="button">2SQX</button>
   var ySquareRoot = document.querySelector('#y-squareRoot-x');
   ySquareRoot.addEventListener('click', function(){input.value  += 'sqrt(';});
-  // <button id="ln" type="button" name="button">ln</button>
+
   var ln = document.querySelector('#ln');
   ln.addEventListener('click', function(){input.value  += 'ln(';});
-  // <button id="logTen" type="button" name="button">log10</button>
   var log = document.querySelector('#log-ten');
   log.addEventListener('click', function(){input.value  += 'log(';});
 
-  // <button id="XEsclamation" type="button" name="button">X!</button>
   var factor = document.querySelector('#factor');
   factor.addEventListener('click', function(){input.value  += '!'; calc();});
-  // <button id="sin" type="button" name="button">sin</button>
+
   var sin = document.querySelector('#sin');
   sin.addEventListener('click', function(){input.value  += 'sin(';});
-  // <button id="cos" type="button" name="button">cos</button>
   var cos = document.querySelector('#cos');
   cos.addEventListener('click', function(){input.value  += 'cos(';});
-  // <button id="tan" type="button" name="button">tan</button>
   var tan = document.querySelector('#tan');
   tan.addEventListener('click', function(){input.value  += 'tan(';});
-  // <button id="e" type="button" name="button">e</button>
+
   var e = document.querySelector('#e');
   e.addEventListener('click', function(){input.value  += 'e'; calc();});
-  // <button id="EE" type="button" name="button">EE</button>
+
   var EEbutton = document.querySelector('#EE');
   EEbutton.addEventListener('click', function(){
     if (EEcalc === false) {
@@ -318,9 +308,9 @@ window.onload = function () {
       EEcalc = false;
       EEbutton.style.background = "gray";
     }
-
+    calc();
   });
-  // <button id="rad" type="button" name="button">Rad</button>
+
   var rad = document.querySelector('#rad');
   rad.addEventListener('click', function(){
     if (degreeType === 'Deg') {
@@ -331,22 +321,29 @@ window.onload = function () {
       rad.innerText = "Rad";
     }
   });
-  // <button id="sinh" type="button" name="button">sinh</button>
+
   var sinh = document.querySelector('#sinh');
   sinh.addEventListener('click', function(){input.value  += 'sinh(';});
-  // <button id="cosh" type="button" name="button">cosh</button>
   var cosh = document.querySelector('#cosh');
   cosh.addEventListener('click', function(){input.value  += 'cosh(';});
-  // <button id="tanh" type="button" name="button">tanh</button>
   var tanh = document.querySelector('#tanh');
   tanh.addEventListener('click', function(){input.value  += 'tanh(';});
-  // <button id="pi" type="button" name="button">π</button>
+
   var pi = document.querySelector('#pi');
   pi.addEventListener('click', function(){input.value  += 'π'; calc();});
-  // <button id="rand" type="button" name="button">Rand</button>
+
   var rand = document.querySelector('#rand');
   rand.addEventListener('click', function(){
-    input.value  += Math.random();
+    if (lastPressed !== 'Rand') {
+      input.value  += Math.random();
+    } else { // If the last button you pressed was Rand. Regenerate a random number instead of adding more
+      expression = input.value.split("");
+      var combinedExpression = combineArray(expression);
+      combinedExpression.pop();
+      input.value = combinedExpression.join('');
+      input.value  += Math.random();
+    }
+
     calc();
   });
 
@@ -525,6 +522,23 @@ function fixInput(arr) {
 }
 
 
+//   SSSSSSSSSSSSSSS         CCCCCCCCCCCCC  IIIIIIIIII  EEEEEEEEEEEEEEEEEEEEEE
+// SS:::::::::::::::S     CCC::::::::::::C  I::::::::I  E::::::::::::::::::::E
+// S:::::SSSSSS::::::S   CC:::::::::::::::C I::::::::I  E::::::::::::::::::::E
+// S:::::S     SSSSSSS  C:::::CCCCCCCC::::C II::::::II  EE::::::EEEEEEEEE::::E
+// S:::::S             C:::::C       CCCCCC   I::::I      E:::::E       EEEEEE
+// S:::::S            C:::::C                 I::::I      E:::::E
+// S::::SSSS         C:::::C                  I::::I      E::::::EEEEEEEEEE
+//  SS::::::SSSSS    C:::::C                  I::::I      E:::::::::::::::E
+//    SSS::::::::SS  C:::::C                  I::::I      E:::::::::::::::E
+//       SSSSSS::::S C:::::C                  I::::I      E::::::EEEEEEEEEE
+//            S:::::SC:::::C                  I::::I      E:::::E
+//            S:::::S C:::::C       CCCCCC    I::::I      E:::::E       EEEEEE
+// SSSSSSS     S:::::S  C:::::CCCCCCCC::::C II::::::II  EE::::::EEEEEEEE:::::E
+// S::::::SSSSSS:::::S   CC:::::::::::::::C I::::::::I  E::::::::::::::::::::E
+// S:::::::::::::::SS      CCC::::::::::::C I::::::::I  E::::::::::::::::::::E
+// SSSSSSSSSSSSSSS           CCCCCCCCCCCCC  IIIIIIIIII  EEEEEEEEEEEEEEEEEEEEEE
+
 function scienceCalc(arr) {
   var arrAsString = arr.join('');
   var regExp = '';
@@ -632,7 +646,22 @@ function functionCalc(arr, fname) {
   return arr;
 }
 
-
+//    ((((((            ))))))
+//   ((::::::(          )::::::))
+//  ((:::::::(            ):::::::))
+// (:::::::((              )):::::::)
+// (::::::(                  )::::::)
+// (:::::(                    ):::::)
+// (:::::(                    ):::::)
+// (:::::(                    ):::::)
+// (:::::(                    ):::::)
+// (:::::(                    ):::::)
+// (:::::(                    ):::::)
+// (::::::(                  )::::::)
+// (:::::::((              )):::::::)
+//  ((:::::::(            ):::::::))
+//   ((::::::(          )::::::)
+//     ((((((            ))))))
 
 
 function parenthesis(arr) {
@@ -664,6 +693,28 @@ function parenthesis(arr) {
   return arr;
 }
 
+//        ^^^                           ///////                                                                       tttt
+//       ^:::^                         /:::::/                                                                     ttt:::t
+//      ^:::::^                       /:::::/                                                                      t:::::t
+//     ^:::::::^                     /:::::/                                                                       t:::::t
+//    ^:::::::::^                   /:::::/             ssssssssss      qqqqqqqqq   qqqqqrrrrr   rrrrrrrrr   ttttttt:::::ttttttt
+//   ^:::::^:::::^                 /:::::/            ss::::::::::s    q:::::::::qqq::::qr::::rrr:::::::::r  t:::::::::::::::::t
+//  ^:::::^ ^:::::^               /:::::/           ss:::::::::::::s  q:::::::::::::::::qr:::::::::::::::::r t:::::::::::::::::t
+// ^^^^^^^   ^^^^^^^             /:::::/            s::::::ssss:::::sq::::::qqqqq::::::qqrr::::::rrrrr::::::rtttttt:::::::tttttt
+//                              /:::::/              s:::::s  ssssss q:::::q     q:::::q  r:::::r     r:::::r      t:::::t
+//                             /:::::/                 s::::::s      q:::::q     q:::::q  r:::::r     rrrrrrr      t:::::t
+//                            /:::::/                     s::::::s   q:::::q     q:::::q  r:::::r                  t:::::t
+//                           /:::::/                ssssss   s:::::s q::::::q    q:::::q  r:::::r                  t:::::t    tttttt
+//                          /:::::/                 s:::::ssss::::::sq:::::::qqqqq:::::q  r:::::r                  t::::::tttt:::::t
+//                         /:::::/                  s::::::::::::::s  q::::::::::::::::q  r:::::r                  tt::::::::::::::t
+//                        /:::::/                    s:::::::::::ss    qq::::::::::::::q  r:::::r                    tt:::::::::::tt
+//                       ///////                      sssssssssss        qqqqqqqq::::::q  rrrrrrr                      ttttttttttt
+//                                                                               q:::::q
+//                                                                               q:::::q
+//                                                                              q:::::::q
+//                                                                              q:::::::q
+//                                                                              q:::::::q
+//                                                                              qqqqqqqqq
 
 
 
@@ -730,6 +781,18 @@ function exponentsAndSqrt(arr) {
 
 
 
+//    ******         ******                 /:::::/
+//    *:::::*       *:::::*                /:::::/
+//    ***::::*******::::***               /:::::/
+//       **:::::::::::**                 /:::::/
+//    ******:::::::::******             /:::::/
+//    *:::::::::::::::::::*            /:::::/
+//    ******:::::::::******           /:::::/
+//       **:::::::::::**             /:::::/
+//    ***::::*******::::***         /:::::/
+//    *:::::*       *:::::*        /:::::/
+//    ******         ******       /:::::/
+
 
 
 
@@ -776,6 +839,17 @@ function exponentsAndSqrt(arr) {
   }
 
 
+
+//       +++++++                        /:::::/
+//       +:::::+                       /:::::/
+//       +:::::+                      /:::::/
+// +++++++:::::+++++++               /:::::/
+// +:::::::::::::::::+              /:::::/             ---------------
+// +:::::::::::::::::+             /:::::/              -:::::::::::::-
+// +++++++:::::+++++++            /:::::/               ---------------
+//       +:::::+                 /:::::/
+//       +:::::+                /:::::/
+//       +++++++               /:::::/
 
 
   function plusAndMinus(arr) {
