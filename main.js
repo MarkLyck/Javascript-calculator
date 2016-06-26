@@ -126,7 +126,7 @@ window.onload = function () {
         (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '-' )) {
       console.log("Too many operators in concession");
     } else {
-      input.value  += '+';
+      input.value  += ' + ';
     }
   });
   var minus = document.querySelector('#subtract');
@@ -142,7 +142,7 @@ window.onload = function () {
         (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '-' )) {
       console.log("Too many operators in concession");
     } else {
-      input.value  += '-';
+      input.value  += ' - ';
     }
   });
   var divide = document.querySelector('#divide');
@@ -154,7 +154,7 @@ window.onload = function () {
         (input.value.charAt(input.value.length-1) === '/')) {
       console.log("Too many operators in concession");
     } else {
-      input.value  += '/';
+      input.value  += ' / ';
     }
   });
   var multiply = document.querySelector('#multiply');
@@ -166,7 +166,7 @@ window.onload = function () {
         (input.value.charAt(input.value.length-1) === '/')) {
       console.log("Too many operators in concession");
     } else {
-      input.value  += '*';
+      input.value  += ' * ';
     }
   });
   var equals = document.querySelector('#equals');
@@ -370,8 +370,7 @@ window.onload = function () {
     if(input.value === '') { // If the input is empty, we just set the result to 0;
       result.innerHTML = 0;
     } else {
-      // Here we take out input field and split every character into the expression array;
-      expression = input.value.split("");
+      expression = input.value.replace(/\s/g, '').split("");
 
       var combinedExpression = combineArray(expression);
       finalResult = orderOfOperations(combinedExpression);
@@ -392,8 +391,6 @@ window.onload = function () {
     }
     return finalResult;
   } // End calc
-
-
 
   function combineArray(arr) {
     var outputArray = [];
@@ -477,6 +474,8 @@ function orderOfOperations(arr) {
 
 
 function fixInput(arr) {
+
+
   // Add missing parenthesis
   if (arr.indexOf('(') >= 0) {
     var startPCounter = 0;
@@ -546,17 +545,10 @@ function scienceCalc(arr) {
   var indexesToSplice = 0;
 
   // Factorial
-  while (arr.indexOf("!") >= 0) { // If the expression contains log
+  while (arr.indexOf("!") >= 0) { // If the expression contains a factor
     var factorIndex = arr.indexOf("!");
     var factor = arr[arr.indexOf("!")-1];
-    var factorArray = [];
-    while (factor > 0) {
-      factorArray.push(String(factor));
-      factorArray.push('*');
-      factor--;
-    }
-    factorArray.pop();
-    var factorResult = orderOfOperations(factorArray);
+    var factorResult = Math.factor(factor);
     arr.splice(factorIndex-1, 2); // Remove the !
 
     if (arr.length === 0) {
@@ -567,6 +559,17 @@ function scienceCalc(arr) {
       arr.splice(factorIndex - 1, 0, factorResult);
     }
   }
+
+  Math.factor = function(factor) {
+    var factorArray = [];
+    while (factor > 0) {
+      factorArray.push(String(factor));
+      factorArray.push('*');
+      factor--;
+    }
+    factorArray.pop();
+    return orderOfOperations(factorArray);
+  };
 
   arr = functionCalc(arr, 'log');
   arr = functionCalc(arr, 'ln');
@@ -885,12 +888,4 @@ function exponentsAndSqrt(arr) {
     }); // End Loop
     return number1;
   }
-
-
-
-
-
-
-
-
 }; // End window.onload

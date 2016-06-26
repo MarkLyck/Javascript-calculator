@@ -4,7 +4,11 @@ p {
 button {
   outline: none;
   cursor: pointer;
-  color: #000; }
+  color: rgba(255, 255, 255, 0.4);
+  background: transparent;
+  border: 0; }
+  button:hover {
+    color: #fff; }
 
 .calculator {
   display: flex;
@@ -14,35 +18,30 @@ button {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: #fff;
   font-size: 10vw;
-  background: #4C4C4C;
+  background: #fff;
   width: 100%;
   height: 30vh;
   text-align: left; }
   .output-container p {
-    margin-right: 20px; }
+    margin-right: 20px;
+    color: #000; }
 
 .wrapper {
   height: 70vh; }
 
 .calculations-wrapper {
-  display: flex; }
+  display: flex;
+  background: #22353E; }
   .calculations-wrapper button {
-    height: 11.21vh;
-    background: #E0E0E0;
-    border-bottom: 0.5px solid #bfbfbf;
-    border-left: 0.5px solid #bfbfbf;
-    border-right: 0;
-    border-top: 0; }
-    .calculations-wrapper button:hover {
-      background: lightgray; }
-    .calculations-wrapper button:active {
-      background: #c7c7c7; }
+    height: 11.21vh; }
 
 form {
   display: flex; }
   form input {
+    background: #2b3f49;
+    color: rgba(255, 255, 255, 0.4);
+    border: 0;
     width: 100%;
     height: 14vh;
     outline: none;
@@ -57,7 +56,12 @@ form {
   .scientific-container button {
     min-width: calc(100%/6);
     padding: 0;
-    background: #D6D6D6; }
+    border-right: 1px solid #19272e;
+    border-bottom: 1px solid #19272e; }
+    .scientific-container button:hover {
+      background: #2b434e; }
+    .scientific-container button:active {
+      background: #1e2f37; }
 
 .mobile-container {
   display: flex;
@@ -69,19 +73,31 @@ form {
     width: 75%; }
 
 .mobile-functions {
-  display: flex; }
+  display: flex;
+  background: transparent; }
 
 .mobile-functions button {
   min-width: calc(100%/3);
   padding: 0;
-  background: #D6D6D6; }
+  border-right: 1px solid #19272e;
+  border-bottom: 1px solid #19272e; }
+  .mobile-functions button:hover {
+    background: #2b434e; }
+  .mobile-functions button:active {
+    background: #1e2f37; }
 
 .input-numbers {
   display: flex;
   flex-wrap: wrap;
-  background: #333847; }
+  background: #2b3f49; }
   .input-numbers button {
-    min-width: calc(100%/3); }
+    min-width: calc(100%/3);
+    border-right: 1px solid #223139;
+    border-bottom: 1px solid #223139; }
+    .input-numbers button:hover {
+      background: #344d59; }
+    .input-numbers button:active {
+      background: #273943; }
   .input-numbers #zero {
     min-width: calc(100%/3*2); }
 
@@ -91,14 +107,12 @@ form {
   flex-direction: column; }
   .operators button {
     width: 100%;
-    background: #FF8C00;
-    color: #fff;
-    border-bottom: 1px solid #e67e00; }
+    background: #C42029;
+    border-bottom: 1px solid #ae1c24; }
     .operators button:hover {
-      background: #e67e00; }
+      background: #ae1c24; }
     .operators button:active {
-      background: #cc7000;
-      color: #E0E0E0; }
+      background: #981920; }
 
 @media (max-width: 600px) {
   .scientific-container {

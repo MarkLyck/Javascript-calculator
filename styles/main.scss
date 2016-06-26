@@ -5,10 +5,14 @@ p {
 }
 
 button {
-  // width: 25%;
   outline: none;
   cursor: pointer;
-  color: $colorBlack;
+  color: $colorWhite;
+  background: transparent;
+  border: 0;
+  &:hover {
+    color: #fff;
+  }
 }
 
 .calculator {
@@ -20,15 +24,14 @@ button {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: #fff;
   font-size: 10vw;
-  // background: #6A63F1;
-  background: #4C4C4C;
+  background: $outputColor;
   width: 100%;
   height: 30vh; // 30% of screen
   text-align: left;
   p {
     margin-right: 20px;
+    color: $colorBlack;
   }
 }
 
@@ -38,25 +41,18 @@ button {
 
 .calculations-wrapper {
   display: flex;
+  background: $functionBtnColor;
   button {
     height: 11.21vh;
-    background: #E0E0E0;
-    border-bottom: 0.5px solid #bfbfbf;
-    border-left: 0.5px solid #bfbfbf;
-    border-right: 0;
-    border-top: 0;
-    &:hover {
-      background: darken(#E0E0E0, 5%);
-    }
-    &:active {
-      background: darken(#E0E0E0, 10%);
-    }
   }
 }
 
 form {
   display: flex;
   input {
+    background: $inputColor;
+    color: $colorWhite;
+    border: 0;
     width: 100%;
     height: 14vh;
     outline: none;
@@ -73,7 +69,14 @@ form {
   button {
     min-width: calc(100%/6);
     padding: 0;
-    background: #D6D6D6;
+    border-right: 1px solid darken($functionBtnColor, 5%);
+    border-bottom: 1px solid darken($functionBtnColor, 5%);
+    &:hover {
+      background: lighten($functionBtnColor, 5%);
+    }
+    &:active {
+      background: darken($functionBtnColor, 2%);
+    }
   }
 }
 
@@ -90,20 +93,36 @@ form {
 
 .mobile-functions {
   display: flex;
+  background: transparent;
 }
 
 .mobile-functions button {
   min-width: calc(100%/3);
   padding: 0;
-  background: #D6D6D6;
+  border-right: 1px solid darken($functionBtnColor, 5%);
+  border-bottom: 1px solid darken($functionBtnColor, 5%);
+  &:hover {
+    background: lighten($functionBtnColor, 5%);
+  }
+  &:active {
+    background: darken($functionBtnColor, 2%);
+  }
 }
 
 .input-numbers {
   display: flex;
   flex-wrap: wrap;
-  background: #333847;
+  background: $numberBtnColor;
   button {
     min-width: calc(100%/3);
+    border-right: 1px solid darken($numberBtnColor, 5%);
+    border-bottom: 1px solid darken($numberBtnColor, 5%);
+    &:hover {
+      background: lighten($numberBtnColor, 5%);
+    }
+    &:active {
+      background: darken($numberBtnColor, 2%);
+    }
   }
   #zero {
     min-width: calc(100%/3*2);
@@ -117,15 +136,13 @@ form {
   button {
     width: 100%;
     // height: 14vh;
-    background: #FF8C00;
-    color: #fff;
-    border-bottom: 1px solid darken(#FF8C00, 5%);
+    background: $operatorBtnColor;
+    border-bottom: 1px solid darken($operatorBtnColor, 5%);
     &:hover {
-      background: darken(#FF8C00, 5%);
+      background: darken($operatorBtnColor, 5%);
     }
     &:active {
-      background: darken(#FF8C00, 10%);
-      color: #E0E0E0;
+      background: darken($operatorBtnColor, 10%);
     }
   }
 }
