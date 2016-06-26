@@ -1,3 +1,5 @@
+@import 'variables';
+
 p {
   margin: 0;
 }
@@ -6,7 +8,7 @@ button {
   // width: 25%;
   outline: none;
   cursor: pointer;
-  color: #000;
+  color: $colorBlack;
 }
 
 .calculator {
@@ -125,5 +127,15 @@ form {
       background: darken(#FF8C00, 10%);
       color: #E0E0E0;
     }
+  }
+}
+
+
+@media (max-width: 600px) {
+  .scientific-container {
+    display: none;
+  }
+  .mobile-container {
+    width: 100%;
   }
 }

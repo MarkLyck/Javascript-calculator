@@ -1,9 +1,7 @@
 // TODO, when pressing enter after having pressed a number, it adds the number to the textfield,
 // like the number was clicked again. The expected result is calc();
 
-// TODO, check if they have an unclosed parenhesis and if they do display an alert box :D
-
-// Memory should be an array of arrays
+// TODO, check if they have an unclosed parenthesis and if they do display an alert box :D
 
 window.onload = function () {
 
@@ -12,10 +10,23 @@ window.onload = function () {
   var number2 = '';
   var op = '';
   var degreeType = "Deg";
-  var EE = false;
+  var alternate = false;
+  var EEcalc = false;
+  var memory = 0;
+  var lastpressed = '';
+
+    document.body.addEventListener('click', function(e) {
+      if (input.value.length > 0) {
+        clear.innerHTML = 'C';
+      }
+    });
 
   // Using KeyUp here instead of keypress, so it will catch backspace
   document.body.addEventListener('keyup', function(e) {
+    if (input.value.length > 0) {
+      clear.innerHTML = 'C';
+    }
+
     var key = e.keyCode;
     // If the ENTER key is pressed
     if (key === 13) {
@@ -23,6 +34,9 @@ window.onload = function () {
       calc();
     // If the BACKSPACE key is pressed
     } else if (key === 8) {
+      if (input.value.length === 0) {
+        clear.innerHTML = 'AC';
+      }
       e.preventDefault(); // Doesn't work
     //   input.value = input.value.substr(0, input.value.length - 1);
     //   calc();
@@ -40,6 +54,7 @@ window.onload = function () {
   clear.addEventListener('click', function(){
     input.value = '';
     result.innerHTML = 0;
+    clear.innerHTML = 'AC';
     expression = [];
     numberCombiner = '';
     number1 = '';
@@ -51,6 +66,7 @@ window.onload = function () {
   });
   var plusMinus = document.querySelector('#plus-minus');
   plusMinus.addEventListener('click', function(){
+    console.log('=== INVERT ===');
     // TODO, EXTRA feature Find out where the cursor is. and set the index to the cursor location
     expression = input.value.split("");
     // Create a loop to go back 1 index at a time, until it reaches something that's NaN
@@ -117,7 +133,11 @@ window.onload = function () {
     numbers[index].addEventListener("click", addValue.bind(null, index));
   }
   var decimal = document.querySelector('.decimal');
-  decimal.addEventListener('click', function(){input.value  += '.';});
+  decimal.addEventListener('click', function(){
+    if (input.value[input.value.length-1] !== '.') { // This prevents multiple decimal points after eachother.
+      input.value  += '.';
+    }
+  });
 
   function addValue(index) {
     input.value += numbers[index].innerText;
@@ -145,89 +165,121 @@ window.onload = function () {
   // <button id="parenthesis-1" type="button" name="button">(</button>
   var par1 = document.querySelector('#parenthesis-1');
   par1.addEventListener('click', function(){input.value  += '(';});
-  par1.style.background = "lightgreen";
   // <button id="parenthesis-2" type="button" name="button">)</button>
   var par2 = document.querySelector('#parenthesis-2');
   par2.addEventListener('click', function(){input.value  += ')'; calc();});
-  par2.style.background = "lightgreen";
   // <button id="mc" type="button" name="button">mc</button>
+  var mc = document.querySelector('#mc');
+  mc.addEventListener('click', function(){memory = 0;});
   // <button id="mPlus" type="button" name="button">m+</button>
+  var mPlus = document.querySelector('#mPlus');
+  mPlus.addEventListener('click', function(){
+    memory = memory + Number(calc());
+    console.log("MEM: "+memory);
+  });
   // <button id="mMinus-2" type="button" name="button">m-</button>
+  var mMinus = document.querySelector('#mMinus');
+  mMinus.addEventListener('click', function(){
+    memory = memory - Number(calc());
+    console.log("MEM: " + memory);
+  });
   // <button id="mr" type="button" name="button">mr</button>
+  var mr = document.querySelector('#mr');
+  mr.addEventListener('click', function(){input.value  += memory; calc();});
   //
   // <button id="second" type="button" name="button">2nd</button>
+  var second = document.querySelector('#second');
+  second.addEventListener('click', function(){
+    if (alternate === false ) {
+      alternate = true;
+      second.style.background = "red";
+      eSquared.innerHTML = 'y<sup>x</sup>';
+      tenSquared.innerHTML = '2<sup>x</sup>';
+      ln.innerHTML = 'log<sub>y</sub>';
+      log.innerHTML = 'log<sub>2</sub>';
+      sin.innerHTML = 'sin<sup>-1</sup>';
+      cos.innerHTML = 'cos<sup>-1</sup>';
+      tan.innerHTML = 'tan<sup>-1</sup>';
+      sinh.innerHTML = 'sinh<sup>-1</sup>';
+      cosh.innerHTML = 'cosh<sup>-1</sup>';
+      tanh.innerHTML = 'tanh<sup>-1</sup>';
+    } else {
+      alternate = false;
+      second.style.background = 'gray';
+      eSquared.innerHTML = 'e<sup>x</sup>';
+      tenSquared.innerHTML = '10<sup>x</sup>';
+      ln.innerHTML = 'ln';
+      log.innerHTML = 'log<sub>10</sub>';
+      sin.innerHTML = 'sin';
+      cos.innerHTML = 'cos';
+      tan.innerHTML = 'tan';
+      sinh.innerHTML = 'sinh';
+      cosh.innerHTML = 'cosh';
+      tanh.innerHTML = 'tanh';
+    }
+  });
   // <button id="X2" type="button" name="button">X2</button>
   var squared = document.querySelector('#squared');
   squared.addEventListener('click', function(){input.value  += '^2';});
-  squared.style.background = "lightgreen";
   // <button id="X3" type="button" name="button">X3</button>
   var squared3 = document.querySelector('#squared-3');
   squared3.addEventListener('click', function(){input.value  += '^3';});
-  squared3.style.background = "lightgreen";
   // <button id="Xy" type="button" name="button">Xy</button>
   var squaredy = document.querySelector('#squared-y');
   squaredy.addEventListener('click', function(){input.value  += '^';});
-  squaredy.style.background = "lightgreen";
   // <button id="eX" type="button" name="button">eX</button>
   var eSquared = document.querySelector('#e-squared');
   eSquared.addEventListener('click', function(){input.value  += 'e^';});
-  eSquared.style.background = "lightgreen";
   // <button id="tenX" type="button" name="button">10X</button>
   var tenSquared = document.querySelector('#ten-squared');
   tenSquared.addEventListener('click', function(){input.value  += '10^';});
-  tenSquared.style.background = "lightgreen";
 
   // <button id="oneDividendX" type="button" name="button">1/X</button>
   var oneDivided = document.querySelector('#one-divided-x');
   oneDivided.addEventListener('click', function(){input.value  += '1/';});
-  oneDivided.style.background = "lightgreen";
   // <button id="twoSquareRootX" type="button" name="button">2SQX</button>
   var twoSquareRoot = document.querySelector('#two-squareroot-x');
   twoSquareRoot.addEventListener('click', function(){input.value  += '2sqrt(';});
-  twoSquareRoot.style.background = "lightgreen";
   // <button id="threeSquareRootX" type="button" name="button">3SQX</button>
   var threeSquareRoot = document.querySelector('#three-squareroot-x');
   threeSquareRoot.addEventListener('click', function(){input.value  += '3sqrt(';});
-  threeSquareRoot.style.background = "lightgreen";
   // <button id="ySquareRootX" type="button" name="button">2SQX</button>
   var ySquareRoot = document.querySelector('#y-squareRoot-x');
   ySquareRoot.addEventListener('click', function(){input.value  += 'sqrt(';});
-  ySquareRoot.style.background = "lightgreen";
   // <button id="ln" type="button" name="button">ln</button>
   var ln = document.querySelector('#ln');
   ln.addEventListener('click', function(){input.value  += 'ln(';});
-  ln.style.background = "lightgreen";
   // <button id="logTen" type="button" name="button">log10</button>
   var log = document.querySelector('#log-ten');
   log.addEventListener('click', function(){input.value  += 'log(';});
-  log.style.background = "lightgreen";
-  //
+
   // <button id="XEsclamation" type="button" name="button">X!</button>
   var factor = document.querySelector('#factor');
   factor.addEventListener('click', function(){input.value  += '!';});
-  factor.style.background = "lightgreen";
   // <button id="sin" type="button" name="button">sin</button>
   var sin = document.querySelector('#sin');
   sin.addEventListener('click', function(){input.value  += 'sin(';});
-  sin.style.background = "lightgreen";
   // <button id="cos" type="button" name="button">cos</button>
   var cos = document.querySelector('#cos');
   cos.addEventListener('click', function(){input.value  += 'cos(';});
-  cos.style.background = "lightgreen";
   // <button id="tan" type="button" name="button">tan</button>
   var tan = document.querySelector('#tan');
   tan.addEventListener('click', function(){input.value  += 'tan(';});
-  tan.style.background = "lightgreen";
   // <button id="e" type="button" name="button">e</button>
   var e = document.querySelector('#e');
   e.addEventListener('click', function(){input.value  += 'e'; calc();});
-  e.style.background = "lightgreen";
   // <button id="EE" type="button" name="button">EE</button>
   var EEbutton = document.querySelector('#EE');
   EEbutton.addEventListener('click', function(){
-    EEbutton = true;
+    if (EEcalc === false) {
+      EEcalc = true;
+      EEbutton.style.background = "black";
+    } else {
+      EEcalc = false;
+      EEbutton.style.background = "gray";
+    }
+
   });
-  EEbutton.style.background = "yellow";
   // <button id="rad" type="button" name="button">Rad</button>
   var rad = document.querySelector('#rad');
   rad.addEventListener('click', function(){
@@ -239,30 +291,24 @@ window.onload = function () {
       rad.innerText = "Rad";
     }
   });
-  rad.style.background = "lightgreen";
   // <button id="sinh" type="button" name="button">sinh</button>
   var sinh = document.querySelector('#sinh');
   sinh.addEventListener('click', function(){input.value  += 'sinh(';});
-  sinh.style.background = "lightgreen";
   // <button id="cosh" type="button" name="button">cosh</button>
   var cosh = document.querySelector('#cosh');
   cosh.addEventListener('click', function(){input.value  += 'cosh(';});
-  cosh.style.background = "lightgreen";
   // <button id="tanh" type="button" name="button">tanh</button>
   var tanh = document.querySelector('#tanh');
   tanh.addEventListener('click', function(){input.value  += 'tanh(';});
-  tanh.style.background = "lightgreen";
   // <button id="pi" type="button" name="button">π</button>
   var pi = document.querySelector('#pi');
   pi.addEventListener('click', function(){input.value  += 'π'; calc();});
-  pi.style.background = "lightgreen";
   // <button id="rand" type="button" name="button">Rand</button>
   var rand = document.querySelector('#rand');
   rand.addEventListener('click', function(){
     input.value  += Math.random();
     calc();
   });
-  rand.style.background = "lightgreen";
 
 //   CCCCCCCCCCCCC                       AAA               LLLLLLLLLLL                     CCCCCCCCCCCCC
 // CCC::::::::::::C                     A:::A              L:::::::::L                  CCC::::::::::::C
@@ -283,6 +329,7 @@ window.onload = function () {
 
 
   function calc() {
+    var finalResult = 0;
     if(input.value === '') { // If the input is empty, we just set the result to 0;
       result.innerHTML = 0;
     } else {
@@ -290,9 +337,14 @@ window.onload = function () {
       expression = input.value.split("");
 
       var combinedExpression = combineArray(expression);
-      var finalResult = orderOfOperations(combinedExpression);
-      result.innerHTML = finalResult;
+      finalResult = orderOfOperations(combinedExpression);
+      if (EEcalc === false) {
+        result.innerHTML = finalResult;
+      } else { //if EE mode is on.
+        result.innerHTML = Number(finalResult).toExponential();
+      }
     }
+    return finalResult;
   } // End calc
 
 
@@ -363,6 +415,7 @@ window.onload = function () {
 
 
 function orderOfOperations(arr) {
+  console.log("EXP Before: " + arr);
   arr = scienceCalc(arr);
   // parenthesis
   arr = parenthesis(arr);
@@ -385,7 +438,7 @@ function orderOfOperations(arr) {
 
 
 
-
+// TODO Most of these can be replaced by a single function which takes the name of the function and the array as arguments
 function scienceCalc(arr) {
   var arrAsString = arr.join('');
   var regExp = '';
@@ -783,7 +836,7 @@ function exponentsAndSqrt(arr) {
       if (array.length === 1) {
         result.innerHTML = item;
       }
-      if (index === 0) {
+      if (index === 0 && !isNaN(item)) {
         number1 = item;
       } else if (isNaN(item)) {
         op = item;
@@ -807,6 +860,7 @@ function exponentsAndSqrt(arr) {
         }
       }
     }); // End Loop
+    console.log("output: " + number1);
     return number1;
   }
 

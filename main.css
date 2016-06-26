@@ -100,4 +100,11 @@ form {
       background: #cc7000;
       color: #E0E0E0; }
 
+@media (max-width: 600px) {
+  .scientific-container {
+    display: none; }
+
+  .mobile-container {
+    width: 100%; } }
+
 /*# sourceMappingURL=main.css.map */
