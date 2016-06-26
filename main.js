@@ -295,7 +295,7 @@ window.onload = function () {
 
   // <button id="XEsclamation" type="button" name="button">X!</button>
   var factor = document.querySelector('#factor');
-  factor.addEventListener('click', function(){input.value  += '!';});
+  factor.addEventListener('click', function(){input.value  += '!'; calc();});
   // <button id="sin" type="button" name="button">sin</button>
   var sin = document.querySelector('#sin');
   sin.addEventListener('click', function(){input.value  += 'sin(';});
