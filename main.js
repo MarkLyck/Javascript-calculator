@@ -15,11 +15,13 @@ window.onload = function () {
   var memory = 0;
   var lastpressed = '';
 
-    document.body.addEventListener('click', function(e) {
-      if (input.value.length > 0) {
-        clear.innerHTML = 'C';
-      }
-    });
+  // When the user clicks any calculator buttons, see if we need to change the clear button
+  var calculator = document.querySelector('.calculations-wrapper');
+  calculator.addEventListener('click', function() {
+    if (input.value.length > 0) {
+      clear.innerHTML = 'C';
+    }
+  });
 
   // Using KeyUp here instead of keypress, so it will catch backspace
   document.body.addEventListener('keyup', function(e) {
@@ -344,6 +346,13 @@ window.onload = function () {
         result.innerHTML = Number(finalResult).toExponential();
       }
     }
+    if (ouput.value.length > 50) {
+      output.style.fontSize = '1rem';
+    } else if (ouput.value.length > 34) {
+      output.style.fontSize = '2rem';
+    } else if (ouput.value.length > 15) {
+      output.style.fontSize = '3rem';
+    }
     return finalResult;
   } // End calc
 
@@ -415,7 +424,6 @@ window.onload = function () {
 
 
 function orderOfOperations(arr) {
-  console.log("EXP Before: " + arr);
   arr = scienceCalc(arr);
   // parenthesis
   arr = parenthesis(arr);
@@ -846,11 +854,9 @@ function exponentsAndSqrt(arr) {
         //   LAST ADDITION AND SUBTRACTION
         // ----------------------------------
         if (op === '+') {
-          console.log(Number(number1) + Number(number2));
           number1 = Number(number1) + Number(number2);
           result.innerHTML = number1;
         } else if (op === '-') {
-          console.log(Number(number1) - Number(number2));
           number1 = Number(number1) - Number(number2);
           result.innerHTML = number1;
         } else {
@@ -860,7 +866,6 @@ function exponentsAndSqrt(arr) {
         }
       }
     }); // End Loop
-    console.log("output: " + number1);
     return number1;
   }
 
