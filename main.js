@@ -171,13 +171,14 @@ window.onload = function () {
   var par2 = document.querySelector('#parenthesis-2');
   par2.addEventListener('click', function(){input.value  += ')'; calc();});
   // <button id="mc" type="button" name="button">mc</button>
+  // TODO when memory is altered add a little text in the output field that displays it's value
   var mc = document.querySelector('#mc');
   mc.addEventListener('click', function(){memory = 0;});
   // <button id="mPlus" type="button" name="button">m+</button>
   var mPlus = document.querySelector('#mPlus');
   mPlus.addEventListener('click', function(){
     memory = memory + Number(calc());
-    console.log("MEM: "+memory);
+    console.log("MEM: " + memory);
   });
   // <button id="mMinus-2" type="button" name="button">m-</button>
   var mMinus = document.querySelector('#mMinus');
@@ -352,6 +353,8 @@ window.onload = function () {
       result.style.fontSize = '2rem';
     } else if (finalResult.length > 15) {
       result.style.fontSize = '3rem';
+    } else {
+      result.style.fontSize = '10vw';
     }
     return finalResult;
   } // End calc
@@ -424,6 +427,7 @@ window.onload = function () {
 
 
 function orderOfOperations(arr) {
+  // TODO add a parser to handle ++, --, +- and -+
   arr = scienceCalc(arr);
   // parenthesis
   arr = parenthesis(arr);
@@ -694,6 +698,28 @@ function scienceCalc(arr) {
 
 
 function parenthesis(arr) {
+
+
+  // Try to add missing parenthesis
+  if (arr.indexOf('(') >= 0) {
+    var startPCounter = 0;
+    var endPCounter = 0;
+    arr.forEach(function (item, index, array) {
+      if (item === '(') {
+        startPCounter++;
+      } else if (item === ')') {
+        endPCounter++;
+      }
+    });
+    if (startPCounter > endPCounter) {
+      var missingP = startPCounter - endPCounter;
+      while (missingP > 0) {
+        arr.push(')');
+        missingP--;
+      }
+    }
+  }
+
   var arrAsString = arr.join('');
   while (arr.indexOf("(") >= 0 && arr.indexOf(")") >= 0) { // If the expression contains a (
     console.log('=== () ===');
@@ -701,7 +727,7 @@ function parenthesis(arr) {
       console.log("found SQRT exception");
       break;
     }
-    var regExp = /\(([^)]+)\)/;
+    var regExp = /\(([^)]+)\)/g;
     var matches = regExp.exec(arrAsString); // This will throw an error if there's no ending parenthesis
     var testArray = matches[1].split("");
     testArray = combineArray(testArray);
@@ -716,6 +742,7 @@ function parenthesis(arr) {
       var insertAtIndex = arr.indexOf("(");
       arr.splice(insertAtIndex, indexesToSplice + 1);
       arr.splice(insertAtIndex, 0, parenthesisResult);
+      arrAsString = arr.join('');
     }
   }
   return arr;
