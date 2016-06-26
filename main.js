@@ -346,12 +346,12 @@ window.onload = function () {
         result.innerHTML = Number(finalResult).toExponential();
       }
     }
-    if (ouput.value.length > 50) {
-      output.style.fontSize = '1rem';
-    } else if (ouput.value.length > 34) {
-      output.style.fontSize = '2rem';
-    } else if (ouput.value.length > 15) {
-      output.style.fontSize = '3rem';
+    if (finalResult.length > 50) {
+      result.style.fontSize = '1rem';
+    } else if (finalResult.length > 34) {
+      result.style.fontSize = '2rem';
+    } else if (finalResult.length > 15) {
+      result.style.fontSize = '3rem';
     }
     return finalResult;
   } // End calc
