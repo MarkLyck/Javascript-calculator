@@ -119,13 +119,50 @@ window.onload = function () {
   });
   // Operators
   var plus = document.querySelector('#addition');
-  plus.addEventListener('click', function(){input.value  += '+';});
+  plus.addEventListener('click', function(){
+    if (input.value.charAt(input.value.length-2) === '+' ||
+    input.value.charAt(input.value.length-2) === '-' ||
+    input.value.charAt(input.value.length-2) === '*' ||
+    input.value.charAt(input.value.length-2) === '/') {
+      console.log('Too many operators in concession');
+    } else {
+      input.value  += '+';
+    }
+
+  });
   var minus = document.querySelector('#subtract');
-  minus.addEventListener('click', function(){input.value  += '-';});
+  minus.addEventListener('click', function(){
+    if (input.value.charAt(input.value.length-2) === '+' ||
+    input.value.charAt(input.value.length-2) === '-' ||
+    input.value.charAt(input.value.length-2) === '*' ||
+    input.value.charAt(input.value.length-2) === '/') {
+      console.log('Too many operators in concession');
+    } else {
+      input.value  += '-';
+    }
+  });
   var divide = document.querySelector('#divide');
-  divide.addEventListener('click', function(){input.value  += '/';});
+  divide.addEventListener('click', function(){
+    if (input.value.charAt(input.value.length-2) === '+' ||
+    input.value.charAt(input.value.length-2) === '-' ||
+    input.value.charAt(input.value.length-1) === '*' ||
+    input.value.charAt(input.value.length-1) === '/') {
+      console.log('Too many operators in concession');
+    } else {
+      input.value  += '/';
+    }
+  });
   var multiply = document.querySelector('#multiply');
-  multiply.addEventListener('click', function(){input.value  += '*';});
+  multiply.addEventListener('click', function(){
+    if (input.value.charAt(input.value.length-2) === '+' ||
+    input.value.charAt(input.value.length-2) === '-' ||
+    input.value.charAt(input.value.length-1) === '*' ||
+    input.value.charAt(input.value.length-1) === '/') {
+      console.log('Too many operators in concession');
+    } else {
+      input.value  += '*';
+    }
+  });
   var equals = document.querySelector('#equals');
   equals.addEventListener('click', function(){calc();});
 
