@@ -11,32 +11,49 @@ button {
     color: #fff; }
 
 .calculator {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column; }
 
 .output-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
   font-size: 10vw;
   background: #fff;
   width: 100%;
   height: 30vh;
+  /* 30% of screen*/
   text-align: left; }
   .output-container p {
     margin-right: 20px;
     color: #000; }
 
 .wrapper {
-  height: 70vh; }
+  height: 70vh;
+  /*70% of screen*/ }
 
 .calculations-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   background: #22353E; }
   .calculations-wrapper button {
     height: 11.21vh; }
 
 form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex; }
   form input {
     background: #2b3f49;
@@ -50,7 +67,10 @@ form {
     font-size: 30px; }
 
 .scientific-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   width: 60%; }
   .scientific-container button {
@@ -64,15 +84,26 @@ form {
       background: #1e2f37; }
 
 .mobile-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 40%; }
   .mobile-container .left-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
     flex: 1;
     width: 75%; }
 
 .mobile-functions {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   background: transparent; }
 
@@ -87,7 +118,10 @@ form {
     background: #1e2f37; }
 
 .input-numbers {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   background: #2b3f49; }
   .input-numbers button {
@@ -102,11 +136,17 @@ form {
     min-width: calc(100%/3*2); }
 
 .operators {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 25%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
   flex-direction: column; }
   .operators button {
     width: 100%;
+    /* height: 14vh;*/
     background: #C42029;
     border-bottom: 1px solid #ae1c24; }
     .operators button:hover {

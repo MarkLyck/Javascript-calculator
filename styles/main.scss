@@ -16,18 +16,29 @@ button {
 }
 
 .calculator {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .output-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   font-size: 10vw;
   background: $outputColor;
   width: 100%;
-  height: 30vh; // 30% of screen
+  height: 30vh; /* 30% of screen*/
   text-align: left;
   p {
     margin-right: 20px;
@@ -36,10 +47,12 @@ button {
 }
 
 .wrapper {
-  height: 70vh; //70% of screen
+  height: 70vh; /*70% of screen*/
 }
 
 .calculations-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   background: $functionBtnColor;
   button {
@@ -48,6 +61,8 @@ button {
 }
 
 form {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   input {
     background: $inputColor;
@@ -63,8 +78,11 @@ form {
 }
 
 .scientific-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   width: 60%;
   button {
     min-width: calc(100%/6);
@@ -81,17 +99,28 @@ form {
 }
 
 .mobile-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 40%;
   .left-wrapper {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
-    flex: 1;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
     width: 75%;
   }
 }
 
 .mobile-functions {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   background: transparent;
 }
@@ -110,8 +139,11 @@ form {
 }
 
 .input-numbers {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   background: $numberBtnColor;
   button {
     min-width: calc(100%/3);
@@ -130,12 +162,17 @@ form {
 }
 
 .operators {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   width: 25%;
-  flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   button {
     width: 100%;
-    // height: 14vh;
+    /* height: 14vh;*/
     background: $operatorBtnColor;
     border-bottom: 1px solid darken($operatorBtnColor, 5%);
     &:hover {
