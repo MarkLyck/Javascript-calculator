@@ -1,8 +1,6 @@
 // TODO, when pressing enter after having pressed a number, it adds the number to the textfield,
 // like the number was clicked again. The expected result is calc();
 
-// TODO, check if they have an unclosed parenthesis and if they do display an alert box :D
-
 window.onload = function () {
 
   var expression = [];
@@ -32,7 +30,7 @@ window.onload = function () {
     var key = e.keyCode;
     // If the ENTER key is pressed
     if (key === 13) {
-      e.preventDefault();
+      e.preventDefault(); // This Doesn't work prevent button presses with Enter
       calc();
     // If the BACKSPACE key is pressed
     } else if (key === 8) {
@@ -54,6 +52,9 @@ window.onload = function () {
   // Special keys
   var clear = document.querySelector('#clear');
   clear.addEventListener('click', function(){
+    if (clear.innerHTML === 'AC') { // If the input/output was already cleared, we also want to clear the memory s
+      memory = 0;
+    }
     input.value = '';
     result.innerHTML = 0;
     clear.innerHTML = 'AC';
@@ -102,7 +103,6 @@ window.onload = function () {
     expressionCounter = expression.length -1;
     var fullNumber = '';
     while(!isNaN(expression[expressionCounter])) {
-      // console.log(expression[expressionCounter]);
       fullNumber = expression[expressionCounter] + fullNumber;
       expression.splice(expressionCounter, 1); //Remove the Number
       expressionCounter--;
@@ -488,12 +488,6 @@ function fixInput(arr) {
 }
 
 
-
-
-
-
-
-// TODO Most of these can be replaced by a single function which takes the name of the function and the array as arguments
 function scienceCalc(arr) {
   var arrAsString = arr.join('');
   var regExp = '';
@@ -523,219 +517,83 @@ function scienceCalc(arr) {
     }
   }
 
+  arr = functionCalc(arr, 'log');
+  arr = functionCalc(arr, 'ln');
+  arr = functionCalc(arr, 'sin');
+  arr = functionCalc(arr, 'cos');
+  arr = functionCalc(arr, 'tan');
+  arr = functionCalc(arr, 'sinh');
+  arr = functionCalc(arr, 'cosh');
+  arr = functionCalc(arr, 'tanh');
+  return arr;
+}
 
-  // LOG
-  while (arrAsString.indexOf("log(") >= 0) { // If the expression contains log
-    console.log("=== LOG ===");
-    regExp = '(log)\(([^)]+)\)';
-    var log = arrAsString.match(regExp)[2];
-    testArray = log.split('');
+
+function functionCalc(arr, fname) {
+  arrAsString = arr.join('');
+  while (arrAsString.indexOf(fname + "(") >= 0) { // If the expression contains function name
+    console.log('===' + fname + '===');
+    regExp = '(' + fname + ')\(([^)]+)\)';
+    var toCalc = arrAsString.match(regExp)[2];
+    testArray = toCalc.split('');
     testArray.shift(); // Remove a leftover parenthesis at the beginning
     testArray = combineArray(testArray);
     indexesToSplice = testArray.length;
-    var logResult = orderOfOperations(testArray);
-    logResult = Math.log10(logResult);
-
-    var logIndex = arr.indexOf('l');
-    if (logIndex >= 0 && arr[logIndex+1] === 'o' && arr[logIndex+2] === 'g'){
-      arr.splice(logIndex, indexesToSplice + 3);
-      arr.splice(logIndex, 0, logResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find log");
-      console.log("========================");
-      break;
+    var fCalcResult = orderOfOperations(testArray);
+    if (fname === 'log') {
+      fCalcResult = Math.log10(fCalcResult);
+    } else if (fname === 'ln') {
+      fCalcResult = Math.log(fCalcResult);
+    } else if (fname === 'sin') {
+      fCalcResult = Math.sin(fCalcResult);
+    } else if (fname === 'cos') {
+      fCalcResult = Math.cos(fCalcResult);
+    } else if (fname === 'tan') {
+      fCalcResult = Math.tan(fCalcResult);
+    } else if (fname === 'sinh') {
+      fCalcResult = Math.sinh(fCalcResult);
+    } else if (fname === 'cosh') {
+      fCalcResult = Math.cosh(fCalcResult);
+    } else if (fname === 'tanh') {
+      fCalcResult = Math.tanh(fCalcResult);
     }
-    arrAsString = arr.join(''); // Reset arrAsString
-  }
 
-
-
-  // LN
-  while (arrAsString.indexOf("ln(") >= 0) { // If the expression contains ln
-    console.log("=== LN ===");
-    regExp = '(ln)\(([^)]+)\)';
-    var ln = arrAsString.match(regExp)[2];
-    testArray = ln.split('');
-    testArray.shift(); // Remove a leftover parenthesis at the beginning
-    testArray = combineArray(testArray);
-    indexesToSplice = testArray.length;
-    var lnResult = orderOfOperations(testArray);
-    lnResult = Math.log(lnResult);
-
-    var lnIndex = arr.indexOf('l');
-    if (lnIndex >= 0 && arr[lnIndex+1] === 'n') {
-      arr.splice(lnIndex, indexesToSplice + 3);
-      arr.splice(lnIndex, 0, lnResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find ln");
-      console.log("========================");
-      break;
-    }
-    arrAsString = arr.join(''); // Reset arrAsString
-  }
-
-
-
-  while (arrAsString.indexOf("sin(") >= 0 ) { // If the expression contains sin
-    console.log("=== SIN ===");
-    regExp = '(sin)\(([^)]+)\)';
-    var sin = arrAsString.match(regExp)[2];
-    testArray = sin.split('');
-    testArray.shift(); // Remove a leftover parenthesis at the beginning
-    testArray = combineArray(testArray);
-    indexesToSplice = testArray.length;
-    var sinResult = orderOfOperations(testArray);
-    sinResult = Math.sin(sinResult);
-
-    var sinIndex = arr.indexOf('s');
-    if (sinIndex >= 0 && arr[sinIndex+1] === 'i' && arr[sinIndex+2] === 'n' && arr[sinIndex+3] === '(') {
-      arr.splice(sinIndex, indexesToSplice + 3);
-      arr.splice(sinIndex, 0, sinResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find the Sinus");
-      console.log("========================");
-      break;
-    }
-    arrAsString = arr.join(''); // Reset arrAsString
-  }
-  while (arrAsString.indexOf("cos(") >= 0) { // If the expression contains sin
-    console.log("=== COS ===");
-    regExp = '(cos)\(([^)]+)\)';
-    var cos = arrAsString.match(regExp)[2];
-    testArray = cos.split('');
-    testArray.shift(); // Remove a leftover parenthesis at the beginning
-    testArray = combineArray(testArray);
-    indexesToSplice = testArray.length;
-    var cosResult = orderOfOperations(testArray);
-    cosResult = Math.cos(cosResult);
-
-    var cosIndex = arr.indexOf('c');
-    if (cosIndex >= 0 && arr[cosIndex+1] === 'o' && arr[cosIndex+2] === 's' && arr[cosIndex+3] === '(') {
-      arr.splice(cosIndex, indexesToSplice + 3);
-      arr.splice(cosIndex, 0, cosResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find the Cosinus");
-      console.log("========================");
-      break;
-    }
-    arrAsString = arr.join(''); // Reset arrAsString
-  }
-  while (arrAsString.indexOf("tan(") >= 0) { // If the expression contains sin
-    console.log("=== TAN ===");
-    regExp = '(tan)\(([^)]+)\)';
-    var tan = arrAsString.match(regExp)[2];
-    testArray = tan.split('');
-    testArray.shift(); // Remove a leftover parenthesis at the beginning
-    testArray = combineArray(testArray);
-    indexesToSplice = testArray.length;
-    var tanResult = orderOfOperations(testArray);
-    tanResult = Math.tan(tanResult);
-
-    var tanIndex = arr.indexOf('t');
-    if (tanIndex >= 0 && arr[tanIndex+1] === 'a' && arr[tanIndex+2] === 'n' && arr[tanIndex+3] === '(') {
-      arr.splice(tanIndex, indexesToSplice + 3);
-      arr.splice(tanIndex, 0, tanResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find the Tangent");
-      console.log("========================");
-      break;
-    }
-    arrAsString = arr.join(''); // Reset arrAsString
-  }
-
-
-
-
-
-  // sinH, cosH, tanh
-  while (arrAsString.indexOf("sinh(") >= 0 ) { // If the expression contains sin
-    console.log("=== SINH ===");
-    regExp = '(sinh)\(([^)]+)\)';
-    var sinh = arrAsString.match(regExp)[2];
-    testArray = sinh.split('');
-    testArray.shift(); // Remove a leftover parenthesis at the beginning
-    testArray = combineArray(testArray);
-    indexesToSplice = testArray.length;
-    var sinhResult = orderOfOperations(testArray);
-    sinhResult = Math.sinh(sinhResult);
-
-    var sinhIndex = arr.indexOf('s');
-    if (sinhIndex >= 0 && arr[sinhIndex+1] === 'i' && arr[sinhIndex+2] === 'n' && arr[sinhIndex+3] === 'h' && arr[sinhIndex+4] === '(') {
-      arr.splice(sinhIndex, indexesToSplice + 4);
-      arr.splice(sinhIndex, 0, sinhResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find the Sinus");
-      console.log("========================");
-      break;
-    }
-    arrAsString = arr.join(''); // Reset arrAsString
-  }
-  while (arrAsString.indexOf("cosh(") >= 0) { // If the expression contains sin
-    console.log("=== COSH ===");
-    regExp = '(cosh)\(([^)]+)\)';
-    var cosh = arrAsString.match(regExp)[2];
-    testArray = cosh.split('');
-    testArray.shift(); // Remove a leftover parenthesis at the beginning
-    testArray = combineArray(testArray);
-    indexesToSplice = testArray.length;
-    var coshResult = orderOfOperations(testArray);
-    coshResult = Math.cosh(coshResult);
-
-    var coshIndex = arr.indexOf('c');
-    if (coshIndex >= 0 && arr[coshIndex+1] === 'o' && arr[coshIndex+2] === 's' && arr[coshIndex+3] === 'h' && arr[coshIndex+4] === '(') {
-      arr.splice(coshIndex, indexesToSplice + 4);
-      arr.splice(coshIndex, 0, coshResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find the Cosinus");
-      console.log("========================");
-      break;
-    }
-    arrAsString = arr.join(''); // Reset arrAsString
-  }
-  while (arrAsString.indexOf("tanh(") >= 0) { // If the expression contains sin
-    console.log("=== TANh ===");
-    regExp = '(tanh)\(([^)]+)\)';
-    var tanh = arrAsString.match(regExp)[2];
-    testArray = tanh.split('');
-    testArray.shift(); // Remove a leftover parenthesis at the beginning
-    testArray = combineArray(testArray);
-    indexesToSplice = testArray.length;
-    tanhResult = orderOfOperations(testArray);
-    tanhResult = Math.tanh(tanhResult);
-
-    var tanhIndex = arr.indexOf('t');
-    if (tanhIndex >= 0 && arr[tanhIndex+1] === 'a' && arr[tanhIndex+2] === 'n' && arr[tanhIndex+3] === 'h' && arr[tanhIndex+4] === '(') {
-      arr.splice(tanhIndex, indexesToSplice + 4);
-      arr.splice(tanhIndex, 0, tanhResult);
-    } else {
-      console.log("========================");
-      console.log("Couldn't find the Tangenth");
-      console.log("========================");
-      break;
+    var fNameIndex = arr.indexOf(fname.charAt(0));
+    if (fname.length === 3) {
+      if (fNameIndex >= 0 && arr[fNameIndex+1] === fname.charAt(1) && arr[fNameIndex+2] === fname.charAt(2)){
+        arr.splice(fNameIndex, indexesToSplice + fname.length);
+        arr.splice(fNameIndex, 0, fCalcResult);
+      } else {
+        console.log("========================");
+        console.log("Couldn't find function: " + fname);
+        console.log("========================");
+        break;
+      }
+    } else if (fname.length === 4) {
+      if (fNameIndex >= 0 && arr[fNameIndex+1] === fname.charAt(1) && arr[fNameIndex+2] === fname.charAt(2) && arr[fNameIndex+3] === fname.charAt(3)){
+        arr.splice(fNameIndex, indexesToSplice + fname.length);
+        arr.splice(fNameIndex, 0, fCalcResult);
+      } else {
+        console.log("========================");
+        console.log("Couldn't find function: " + fname);
+        console.log("========================");
+        break;
+      }
+    } else if (fname.length === 2) {
+      if (fNameIndex >= 0 && arr[fNameIndex+1] === fname.charAt(1)){
+        arr.splice(fNameIndex, indexesToSplice + fname.length);
+        arr.splice(fNameIndex, 0, fCalcResult);
+      } else {
+        console.log("========================");
+        console.log("Couldn't find function: " + fname);
+        console.log("========================");
+        break;
+      }
     }
     arrAsString = arr.join(''); // Reset arrAsString
   }
   return arr;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
