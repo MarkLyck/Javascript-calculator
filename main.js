@@ -427,7 +427,7 @@ window.onload = function () {
 
 
 function orderOfOperations(arr) {
-  // TODO add a parser to handle ++, --, +- and -+
+  arr = fixInput(arr);
   arr = scienceCalc(arr);
   // parenthesis
   arr = parenthesis(arr);
@@ -442,7 +442,50 @@ function orderOfOperations(arr) {
 
 
 
+function fixInput(arr) {
+  // Add missing parenthesis
+  if (arr.indexOf('(') >= 0) {
+    var startPCounter = 0;
+    var endPCounter = 0;
+    arr.forEach(function (item, index, array) {
+      if (item === '(') {
+        startPCounter++;
+      } else if (item === ')') {
+        endPCounter++;
+      }
+    });
+    if (startPCounter > endPCounter) {
+      var missingP = startPCounter - endPCounter;
+      while (missingP > 0) {
+        arr.push(')');
+        missingP--;
+      }
+    }
+  } // End Parenthesis fix
 
+  // Handle ++, --, +- and -+
+  arr.forEach(function (item, index, array) {
+    if (item === '+') {
+      if (arr[index-1] === '+') {
+        arr.splice(index-1, 1); //Remove the plus before it.
+      } else if (arr[index-1] === '-') {
+        arr.splice(index-1, 1); //Remove the minus before it.
+      } else if (arr[index-1] === '*') {
+        arr.splice(index, 1); //Remove the plus
+      } else if (arr[index-1] === '/') {
+        arr.splice(index, 1); //Remove the plus
+      }
+    } else if (item === '-') {
+      if (arr[index-1] === '+') {
+        arr.splice(index-1, 1); //Remove the plus before it.
+      } else if (arr[index-1] === '-') {
+        arr.splice(index-1, 2); //Remove the minus before it and the minus
+        arr.splice(index-1, 0, '+'); //Insert a plus instead.
+      }
+    }
+  });
+  return arr;
+}
 
 
 
@@ -698,28 +741,6 @@ function scienceCalc(arr) {
 
 
 function parenthesis(arr) {
-
-
-  // Try to add missing parenthesis
-  if (arr.indexOf('(') >= 0) {
-    var startPCounter = 0;
-    var endPCounter = 0;
-    arr.forEach(function (item, index, array) {
-      if (item === '(') {
-        startPCounter++;
-      } else if (item === ')') {
-        endPCounter++;
-      }
-    });
-    if (startPCounter > endPCounter) {
-      var missingP = startPCounter - endPCounter;
-      while (missingP > 0) {
-        arr.push(')');
-        missingP--;
-      }
-    }
-  }
-
   var arrAsString = arr.join('');
   while (arr.indexOf("(") >= 0 && arr.indexOf(")") >= 0) { // If the expression contains a (
     console.log('=== () ===');
