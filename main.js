@@ -12,6 +12,7 @@ window.onload = function () {
   var EEcalc = false;
   var memory = 0;
   var lastPressed = '';
+  var savedArray = [];
 
   // When the user clicks any calculator buttons, see if we need to change the clear button
   var calculator = document.querySelector('.calculations-wrapper');
@@ -899,6 +900,14 @@ function exponentsAndSqrt(arr) {
           number1 = Number(number1) - Number(number2);
           result.innerHTML = number1;
         } else {
+          // This is a fallback that assures everything that can be calculated has been calculated.
+          // Solves some very rare but potential calculation errors.
+          while (savedArray.length !== arr) {
+            savedArray = scienceCalc(arr);
+            savedArray = parenthesis(arr);
+            savedArray = exponentsAndSqrt(arr);
+            return plusAndMinus(savedArray);
+          }
           console.log("========================");
           console.log("ERROR: Unknown operator: " + op);
           console.log("========================");
