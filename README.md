@@ -1,6 +1,8 @@
 # Javascript Scientific calculator
 A fully functional and responsive scientific calculator using JS
 
+See it live at: [mlyck-calculator.surge.sh](http://mlyck-calculator.surge.sh)
+
 ![alt text](https://github.com/MarkLyck/Javascript-Calculator/blob/master/images/sc_calc_screenshot.png?raw=true "Scientific Calculator")
 
 ### Features
