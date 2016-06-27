@@ -479,7 +479,6 @@ function orderOfOperations(arr) {
   // Calculate * & /
   arr = multiplyAndDivide(arr);
   // Calculate + and -
-  console.log("ARR end: ", arr);
   return plusAndMinus(arr);
 }
 
@@ -775,12 +774,10 @@ function exponentsAndSqrt(arr) {
         console.log('PRECEEDED BY NUM');
         sqrtResult = Math.sqrt(sqrtResult) * arr[arrAsString.indexOf('sqrt') -1];
       }
-      console.log('RESULT: ' + sqrtResult);
 
 
       sqrtIndex = arr.indexOf('s');
       if (sqrtIndex >= 0 && arr[sqrtIndex+1] === 'q' && arr[sqrtIndex+2] === 'r' && arr[sqrtIndex+3] === 't' && arr[sqrtIndex+4] === '(' && !isNaN(arr[sqrtIndex-1])) {
-        console.log('success?');
         sqrtResult = Math.sqrt(sqrtResult) * arr[arrAsString.indexOf('sqrt') -1];
         arr.splice(sqrtIndex - 1, indexesToSplice + 6);
         arr.splice(sqrtIndex -1, 0, sqrtResult);
