@@ -37,6 +37,7 @@ window.onload = function () {
     } else if (key === 8) {
       if (input.value.length === 0) {
         clear.innerHTML = 'AC';
+        calc();
       }
       e.preventDefault(); // Doesn't work
     }
@@ -45,6 +46,9 @@ window.onload = function () {
   // Main parts
   var result = document.querySelector('#output');
   var input = document.querySelector('#input');
+  input.addEventListener('keyup', function(){
+    calc();
+  });
 
   // Special keys
   var clear = document.querySelector('#clear');
@@ -471,6 +475,7 @@ function orderOfOperations(arr) {
   // Calculate * & /
   arr = multiplyAndDivide(arr);
   // Calculate + and -
+  console.log("ARR end: ", arr);
   return plusAndMinus(arr);
 }
 
@@ -617,9 +622,10 @@ function functionCalc(arr, fname) {
     }
 
     var fNameIndex = arr.indexOf(fname.charAt(0));
+    console.log("fnameL: " + fname.length);
     if (fname.length === 3) {
       if (fNameIndex >= 0 && arr[fNameIndex+1] === fname.charAt(1) && arr[fNameIndex+2] === fname.charAt(2)){
-        arr.splice(fNameIndex, indexesToSplice + fname.length);
+        arr.splice(fNameIndex, indexesToSplice + fname.length+2);
         arr.splice(fNameIndex, 0, fCalcResult);
       } else {
         console.log("========================");
@@ -629,7 +635,7 @@ function functionCalc(arr, fname) {
       }
     } else if (fname.length === 4) {
       if (fNameIndex >= 0 && arr[fNameIndex+1] === fname.charAt(1) && arr[fNameIndex+2] === fname.charAt(2) && arr[fNameIndex+3] === fname.charAt(3)){
-        arr.splice(fNameIndex, indexesToSplice + fname.length);
+        arr.splice(fNameIndex, indexesToSplice + fname.length+2);
         arr.splice(fNameIndex, 0, fCalcResult);
       } else {
         console.log("========================");
@@ -639,7 +645,7 @@ function functionCalc(arr, fname) {
       }
     } else if (fname.length === 2) {
       if (fNameIndex >= 0 && arr[fNameIndex+1] === fname.charAt(1)){
-        arr.splice(fNameIndex, indexesToSplice + fname.length);
+        arr.splice(fNameIndex, indexesToSplice + fname.length+2);
         arr.splice(fNameIndex, 0, fCalcResult);
       } else {
         console.log("========================");
@@ -673,7 +679,6 @@ function functionCalc(arr, fname) {
 
 function parenthesis(arr) {
   var arrAsString = arr.join('');
-  console.log("arr before" + arr);
 
   while (arr.indexOf("(") >= 0) {
     var first = arrAsString.indexOf("(");
@@ -690,22 +695,24 @@ function parenthesis(arr) {
       last++;
     }
 
-
     var nested = arrAsString.substr(first + 1, last - first - 1);
     var parResult = orderOfOperations(nested.split(''));
-    console.log(parResult);
 
     var indexesToSplice = last - first;
     var insertAtIndex = first;
-    console.log('indexes to Splice: ' + indexesToSplice);
-    console.log('insetAtIndex: ' + insertAtIndex);
+
     arr.splice(insertAtIndex, indexesToSplice);
     arr.splice(insertAtIndex, 0, parResult);
     arrAsString = arr.join(''); // Reset string
   }
-  console.log("arr after" + arr);
   return arr;
 }
+
+
+
+
+
+
 
 //        ^^^                           ///////                                                                       tttt
 //       ^:::^                         /:::::/                                                                     ttt:::t
@@ -729,8 +736,6 @@ function parenthesis(arr) {
 //                                                                              q:::::::q
 //                                                                              q:::::::q
 //                                                                              qqqqqqqqq
-
-
 
 function exponentsAndSqrt(arr) {
   var exponentResult = 0;
