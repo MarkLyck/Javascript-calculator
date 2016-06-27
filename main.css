@@ -174,5 +174,11 @@ form {
 
   .mobile-container {
     width: 100%; } }
+@media (orientation: portrait) {
+  .scientific-container {
+    display: none; }
+
+  .mobile-container {
+    width: 100%; } }
 
 /*# sourceMappingURL=main.css.map */
