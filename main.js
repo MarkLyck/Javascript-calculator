@@ -571,18 +571,6 @@ function scienceCalc(arr) {
       arr.splice(factorIndex - 1, 0, factorResult);
     }
   }
-
-  Math.factor = function(factor) {
-    var factorArray = [];
-    while (factor > 0) {
-      factorArray.push(String(factor));
-      factorArray.push('*');
-      factor--;
-    }
-    factorArray.pop();
-    return orderOfOperations(factorArray);
-  };
-
   arr = functionCalc(arr, 'log');
   arr = functionCalc(arr, 'ln');
   arr = functionCalc(arr, 'sin');
@@ -594,6 +582,16 @@ function scienceCalc(arr) {
   return arr;
 }
 
+Math.factor = function(factor) {
+  var factorArray = [];
+  while (factor > 0) {
+    factorArray.push(String(factor));
+    factorArray.push('*');
+    factor--;
+  }
+  factorArray.pop();
+  return orderOfOperations(factorArray);
+};
 
 function functionCalc(arr, fname) {
   arrAsString = arr.join('');
@@ -684,10 +682,10 @@ function parenthesis(arr) {
   var arrAsString = arr.join('');
 
   while (arr.indexOf("(") >= 0) {
-    var first = arrAsString.indexOf("(");
+    console.log('=== () ===');
+    var first = arr.indexOf("(");
     var last = first+1;
     var layer = 1;
-
     // This handles nested parenthesis
     while (layer !== 0) {
       if (arr[last] === ')') {
@@ -697,9 +695,9 @@ function parenthesis(arr) {
       }
       last++;
     }
-
-    var nested = arrAsString.substr(first + 1, last - first - 1);
-    var parResult = orderOfOperations(nested.split(''));
+    var nested = arrAsString.substr(first + 1, last - first +1);
+    var parResult = combineArray(nested.split(''));
+    parResult = orderOfOperations(parResult);
 
     var indexesToSplice = last - first;
     var insertAtIndex = first;
@@ -911,6 +909,7 @@ function exponentsAndSqrt(arr) {
         }
       }
     }); // End Loop
+    console.log('RESULT: ' + number1);
     return number1;
   }
 }; // End window.onload
