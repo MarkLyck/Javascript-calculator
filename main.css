@@ -23,6 +23,7 @@ button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  background: url("images/cream_dust.png");
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   justify-content: flex-end;
@@ -30,14 +31,13 @@ button {
   -ms-flex-align: center;
   align-items: center;
   font-size: 10vw;
-  background: #fff;
   width: 100%;
   height: 30vh;
   /* 30% of screen*/
   text-align: left; }
   .output-container p {
     margin-right: 20px;
-    color: #000; }
+    color: #2b3f49; }
 
 .wrapper {
   height: 70vh;
@@ -54,7 +54,9 @@ button {
 form {
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  border-bottom: 1px solid #223139;
+  border-top: 1px solid #223139; }
   form input {
     background: #2b3f49;
     color: rgba(255, 255, 255, 0.4);
@@ -140,6 +142,17 @@ form {
   display: -ms-flexbox;
   display: flex;
   width: 25%;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c42029+0,c15176+99 */
+  background: #c42029;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #c42029 0%, #c15176 99%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #c42029 0%, #c15176 99%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #c42029 0%, #c15176 99%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c42029', endColorstr='#c15176',GradientType=0 );
+  /* IE6-9 */
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
@@ -147,12 +160,11 @@ form {
   .operators button {
     width: 100%;
     /* height: 14vh;*/
-    background: #C42029;
     border-bottom: 1px solid #ae1c24; }
     .operators button:hover {
-      background: #ae1c24; }
+      background: rgba(255, 255, 255, 0.1); }
     .operators button:active {
-      background: #981920; }
+      background: rgba(0, 0, 0, 0.1); }
 
 @media (max-width: 600px) {
   .scientific-container {

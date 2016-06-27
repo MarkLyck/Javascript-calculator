@@ -29,6 +29,7 @@ button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  background: url('images/cream_dust.png');
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
@@ -36,7 +37,7 @@ button {
       -ms-flex-align: center;
           align-items: center;
   font-size: 10vw;
-  background: $outputColor;
+  // background: $outputColor;
   width: 100%;
   height: 30vh; /* 30% of screen*/
   text-align: left;
@@ -64,6 +65,8 @@ form {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  border-bottom: 1px solid darken($numberBtnColor, 5%);
+  border-top: 1px solid darken($numberBtnColor, 5%);
   input {
     background: $inputColor;
     color: $colorWhite;
@@ -166,6 +169,13 @@ form {
   display: -ms-flexbox;
   display: flex;
   width: 25%;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#c42029+0,c15176+99 */
+  background: rgb(196,32,41); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgba(196,32,41,1) 0%, rgba(193,81,118,1) 99%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(196,32,41,1) 0%,rgba(193,81,118,1) 99%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(196,32,41,1) 0%,rgba(193,81,118,1) 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c42029', endColorstr='#c15176',GradientType=0 ); /* IE6-9 */
+
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -173,13 +183,13 @@ form {
   button {
     width: 100%;
     /* height: 14vh;*/
-    background: $operatorBtnColor;
+    // background: $operatorBtnColor;
     border-bottom: 1px solid darken($operatorBtnColor, 5%);
     &:hover {
-      background: darken($operatorBtnColor, 5%);
+      background: rgba(255,255,255,0.1);
     }
     &:active {
-      background: darken($operatorBtnColor, 10%);
+      background: rgba(0,0,0,0.1);
     }
   }
 }

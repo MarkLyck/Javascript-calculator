@@ -1,5 +1,5 @@
 // TODO, when pressing enter after having pressed a number, it adds the number to the textfield,
-// like the number was clicked again. The expected result is calc();
+// like the number was clicked again. The expected result is to run the calc() function
 
 window.onload = function () {
 
@@ -116,14 +116,15 @@ window.onload = function () {
   var plus = document.querySelector('#addition');
   plus.addEventListener('click', function(){
     // This makes sure the user can't type in too many operators in concession
-    if ((input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '-' )) {
+    var testString = input.value.replace(/\s/g, '');
+    if ((testString.charAt(testString.length-2) === '+' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '+' && testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-2) === '-' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '-' && testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-2) === '*' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '*' && testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-2) === '/' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '/' && testString.charAt(testString.length-1) === '-' )) {
       console.log("Too many operators in concession");
     } else {
       input.value  += ' + ';
@@ -132,14 +133,15 @@ window.onload = function () {
   var minus = document.querySelector('#subtract');
   minus.addEventListener('click', function(){
     // This makes sure the user can't type in too many operators in concession
-    if ((input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '+' && input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '-' && input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '*' && input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-2) === '/' && input.value.charAt(input.value.length-1) === '-' )) {
+    var testString = input.value.replace(/\s/g, '');
+    if ((testString.charAt(testString.length-2) === '+' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '+' && testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-2) === '-' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '-' && testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-2) === '*' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '*' && testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-2) === '/' && testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-2) === '/' && testString.charAt(testString.length-1) === '-' )) {
       console.log("Too many operators in concession");
     } else {
       input.value  += ' - ';
@@ -148,10 +150,11 @@ window.onload = function () {
   var divide = document.querySelector('#divide');
   divide.addEventListener('click', function(){
     // This makes sure the user can't type in too many operators in concession
-    if ((input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-1) === '*') ||
-        (input.value.charAt(input.value.length-1) === '/')) {
+    var testString = input.value.replace(/\s/g, '');
+    if ((testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-1) === '*') ||
+        (testString.charAt(testString.length-1) === '/')) {
       console.log("Too many operators in concession");
     } else {
       input.value  += ' / ';
@@ -160,10 +163,11 @@ window.onload = function () {
   var multiply = document.querySelector('#multiply');
   multiply.addEventListener('click', function(){
     // This makes sure the user can't type in too many operators in concession
-    if ((input.value.charAt(input.value.length-1) === '+' ) ||
-        (input.value.charAt(input.value.length-1) === '-' ) ||
-        (input.value.charAt(input.value.length-1) === '*') ||
-        (input.value.charAt(input.value.length-1) === '/')) {
+    var testString = input.value.replace(/\s/g, '');
+    if ((testString.charAt(testString.length-1) === '+' ) ||
+        (testString.charAt(testString.length-1) === '-' ) ||
+        (testString.charAt(testString.length-1) === '*') ||
+        (testString.charAt(testString.length-1) === '/')) {
       console.log("Too many operators in concession");
     } else {
       input.value  += ' * ';
@@ -233,7 +237,7 @@ window.onload = function () {
   second.addEventListener('click', function(){
     if (alternate === false ) {
       alternate = true;
-      second.style.background = "red";
+      second.style.background = '#1E2F37';
       eSquared.innerHTML = 'y<sup>x</sup>';
       tenSquared.innerHTML = '2<sup>x</sup>';
       ln.innerHTML = 'log<sub>y</sub>';
@@ -246,7 +250,7 @@ window.onload = function () {
       tanh.innerHTML = 'tanh<sup>-1</sup>';
     } else {
       alternate = false;
-      second.style.background = 'gray';
+      second.style.background = '#22353E';
       eSquared.innerHTML = 'e<sup>x</sup>';
       tenSquared.innerHTML = '10<sup>x</sup>';
       ln.innerHTML = 'ln';
@@ -303,10 +307,10 @@ window.onload = function () {
   EEbutton.addEventListener('click', function(){
     if (EEcalc === false) {
       EEcalc = true;
-      EEbutton.style.background = "black";
+      EEbutton.style.background = '#1E2F37';
     } else {
       EEcalc = false;
-      EEbutton.style.background = "gray";
+      EEbutton.style.background = '#22353E';
     }
     calc();
   });
@@ -669,30 +673,37 @@ function functionCalc(arr, fname) {
 
 function parenthesis(arr) {
   var arrAsString = arr.join('');
-  while (arr.indexOf("(") >= 0 && arr.indexOf(")") >= 0) { // If the expression contains a (
-    console.log('=== () ===');
-    if (arr[arr.indexOf('(') - 4] === 's' && arr[arr.indexOf('(') - 3] === 'q' && arr[arr.indexOf('(') - 2] === 'r' && arr[arr.indexOf('(') - 1] === 't') {
-      console.log("found SQRT exception");
-      break;
+  console.log("arr before" + arr);
+
+  while (arr.indexOf("(") >= 0) {
+    var first = arrAsString.indexOf("(");
+    var last = first+1;
+    var layer = 1;
+
+    // This handles nested parenthesis
+    while (layer !== 0) {
+      if (arr[last] === ')') {
+        layer--;
+      } else if (arr[last] === '(') {
+        layer++;
+      }
+      last++;
     }
-    var regExp = /\(([^)]+)\)/g;
-    var matches = regExp.exec(arrAsString); // This will throw an error if there's no ending parenthesis
-    var testArray = matches[1].split("");
-    testArray = combineArray(testArray);
-    testArray = multiplyAndDivide(testArray);
-    var parenthesisResult = plusAndMinus(testArray);
-    if (testArray.indexOf("(") >= 0) { // If there are nested parenthesis
-      console.log("ERROR: No support for nested parentheses yet.");
-      // TODO allow nested parentheses
-    } else {
-      // Splice arr starting at the first '(' and ending at the first '('
-      var indexesToSplice = arr.indexOf(")") - arr.indexOf("(");
-      var insertAtIndex = arr.indexOf("(");
-      arr.splice(insertAtIndex, indexesToSplice + 1);
-      arr.splice(insertAtIndex, 0, parenthesisResult);
-      arrAsString = arr.join('');
-    }
+
+
+    var nested = arrAsString.substr(first + 1, last - first - 1);
+    var parResult = orderOfOperations(nested.split(''));
+    console.log(parResult);
+
+    var indexesToSplice = last - first;
+    var insertAtIndex = first;
+    console.log('indexes to Splice: ' + indexesToSplice);
+    console.log('insetAtIndex: ' + insertAtIndex);
+    arr.splice(insertAtIndex, indexesToSplice);
+    arr.splice(insertAtIndex, 0, parResult);
+    arrAsString = arr.join(''); // Reset string
   }
+  console.log("arr after" + arr);
   return arr;
 }
 
