@@ -187,7 +187,10 @@ window.onload = function () {
   }
   var decimal = document.querySelector('.decimal');
   decimal.addEventListener('click', function(){
-    if (input.value[input.value.length-1] !== '.') { // This prevents multiple decimal points after eachother.
+    var decimalTest = input.value.split('');
+    decimalTest = combineArray(decimalTest);
+    // This dissalows multiple decimals in concession and multiple decimals in one number.
+    if(decimalTest[decimalTest.length-1].indexOf('.') < 0 && input.value[input.value.length-1] !== '.') {
       input.value  += '.';
     }
   });
